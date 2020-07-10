@@ -14,11 +14,18 @@ public class PlayerShip : MonoBehaviour
     public float UpgradedAcceleration;
     public bool HasSpeedUpgrade;
     public float CurrentSpeed;
+    public float AccelerationCost;
     
     // Rotation
     public float StandardRotationSpeed;
     public float UpgradedRotationSpeed;
     public bool HasRotationUpgrade;
+    public float RotationCost;
+    
+    // Stats
+    public float Health;
+    public float Control;
+    public int Gold;
     
     /// <summary>
     /// Standard start
@@ -26,6 +33,9 @@ public class PlayerShip : MonoBehaviour
     void Start()
     {
         MySpaceObject = GetComponent<SpaceObject>();
+
+        Health = 100f;
+        Control = 100f;
     }
 
     /// <summary>
@@ -40,7 +50,9 @@ public class PlayerShip : MonoBehaviour
     }
 
     /// <summary>
-    /// Update loop to handle all input
+    /// Update loop to handle all input.
+    /// Friction is only applied while accelerating for a smoother experience.
+    /// It's less realistic, but it makes it much easier to control.
     /// </summary>
     private void UpdateInput()
     {
@@ -48,12 +60,7 @@ public class PlayerShip : MonoBehaviour
         {
             float speed = HasSpeedUpgrade ? UpgradedAcceleration : StandardAcceleration;
             MySpaceObject.MoveForward(speed * Time.deltaTime);
-        }
-
-        if (HoldingDown())
-        {
-            float speed = HasSpeedUpgrade ? UpgradedAcceleration : StandardAcceleration;
-            MySpaceObject.MoveForward(-speed * Time.deltaTime);
+            MySpaceObject.ApplyFriction();
         }
 
         if (HoldingLeft())

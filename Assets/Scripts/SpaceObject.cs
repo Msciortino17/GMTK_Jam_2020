@@ -40,4 +40,16 @@ public class SpaceObject : MonoBehaviour
     {
         MyRigidBody.AddRelativeForce(_value, 0f, 0f, ForceMode.Acceleration);
     }
+
+    /// <summary>
+    /// Attempts to slow down the object to a speed of 0.
+    /// The faster its going, the more force will be used.
+    /// </summary>
+    public void ApplyFriction()
+    {
+        float x = MyRigidBody.velocity.x * 0.5f;
+        float y = MyRigidBody.velocity.y * 0.5f;
+        MyRigidBody.AddForce(-x, -y, 0f);
+    }
+    
 }
