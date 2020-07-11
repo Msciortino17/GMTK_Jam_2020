@@ -806,7 +806,7 @@ Canvas:
   m_SortingBucketNormalizedSize: 0
   m_AdditionalShaderChannelsFlag: 0
   m_SortingLayerID: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 10
   m_TargetDisplay: 0
 --- !u!224 &763504853
 RectTransform:
@@ -2558,6 +2558,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: PlayerShip
       objectReference: {fileID: 0}
+    - target: {fileID: 7545592143958041961, guid: 8e8f4c674d073493bb284f558f05cb72,
+        type: 3}
+      propertyPath: prewarm
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7620000571542121724, guid: 8e8f4c674d073493bb284f558f05cb72,
         type: 3}
       propertyPath: ControlBar
@@ -2583,6 +2588,11 @@ PrefabInstance:
       propertyPath: HealthBar
       value: 
       objectReference: {fileID: 1201294898}
+    - target: {fileID: 8788060529081231220, guid: 8e8f4c674d073493bb284f558f05cb72,
+        type: 3}
+      propertyPath: m_SortingOrder
+      value: -10
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8e8f4c674d073493bb284f558f05cb72, type: 3}
 --- !u!1001 &5878723019677956261

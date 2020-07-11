@@ -5,14 +5,16 @@ using Random = UnityEngine.Random;
 public class Asteroid : MonoBehaviour
 {
     public SpaceObject MySpaceObject;
+    public Rigidbody MyRigidBody;
     public int health;
 
     public float ShipKnockbackForce;
     public float AsteroidKnockbackForce;
 
-    private void Start()
+    private void Awake()
     {
         MySpaceObject = GetComponent<SpaceObject>();
+        MyRigidBody = GetComponent<Rigidbody>();
         health = Random.Range(1, 5);
         transform.localScale = new Vector3(health * 3f, health * 3f, 1f);
     }
@@ -56,10 +58,7 @@ public class Asteroid : MonoBehaviour
             playerShip.MySpaceObject.MyRigidBody.AddExplosionForce(ShipKnockbackForce, transform.position, 10f);
         }
 
-        if (other.transform != null)
-        {
-            MySpaceObject.MyRigidBody.AddExplosionForce(AsteroidKnockbackForce, other.transform.position, 100f);
-        }
+        MyRigidBody.AddExplosionForce(AsteroidKnockbackForce, other.transform.position, 100f);
         DeductHealth(1);
     }
 

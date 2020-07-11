@@ -12,9 +12,9 @@ public class SpaceObject : MonoBehaviour
     public float WrapperTimer;
     
     /// <summary>
-    /// Standard start
+    /// Standard awake
     /// </summary>
-    void Start()
+    void Awake()
     {
         MyGameManager = GameManager.GetReference();
         MyRigidBody = GetComponent<Rigidbody>();
