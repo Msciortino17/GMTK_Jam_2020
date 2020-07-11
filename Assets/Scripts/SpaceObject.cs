@@ -45,6 +45,7 @@ public class SpaceObject : MonoBehaviour
                 position.y = -position.y;
                 transform.position = position;
                 WrapperTimer = 0.5f;
+                // todo - really want a noticeable effect for this so it's not too jarring.
             }
         }
         else

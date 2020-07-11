@@ -1998,11 +1998,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   LevelRadius: 400
-  NumAsteroids: 50
-  Asteroids: {fileID: 1770249463}
   Player: {fileID: 1602525255}
+  Asteroids: {fileID: 1770249463}
   AsteroidPrefab: {fileID: 343490448597652674, guid: 73e0f1a4a46f549db9185cf23c06b5b6,
     type: 3}
+  NumAsteroids: 10
+  AsteroidSpawnTimer: 0
+  AsteroidSpawnTime: 0.5
+  MinAsteroidDistance: 50
+  MaxAsteroidDistance: 100
 --- !u!4 &1552840548
 Transform:
   m_ObjectHideFlags: 0

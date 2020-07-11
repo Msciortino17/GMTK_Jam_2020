@@ -7,6 +7,7 @@ public class Asteroid : MonoBehaviour
     public SpaceObject MySpaceObject;
     public Rigidbody MyRigidBody;
     public int health;
+    public float Timer;
 
     public float ShipKnockbackForce;
     public float AsteroidKnockbackForce;
@@ -16,7 +17,8 @@ public class Asteroid : MonoBehaviour
         MySpaceObject = GetComponent<SpaceObject>();
         MyRigidBody = GetComponent<Rigidbody>();
         health = Random.Range(1, 5);
-        transform.localScale = new Vector3(health * 3f, health * 3f, 1f);
+        transform.localScale = new Vector3(health * 3f, health * 3f, health * 3f);
+        Timer = 15f;
     }
 
     /// <summary>
@@ -25,13 +27,33 @@ public class Asteroid : MonoBehaviour
     public void Fire(float speed)
     {
         Rigidbody myRigidBody = GetComponent<Rigidbody>();
-        myRigidBody.AddRelativeForce(speed, 0f, 0f, ForceMode.Impulse);
+        myRigidBody.AddRelativeForce(0f, 0f, speed, ForceMode.Impulse);
     }
 
     // Update is called once per frame
     void Update()
     {
         // todo put random stuff in here when control is low
+        
+        // Every 15 seconds, do a distance check and despawn if far away.
+        if (Timer < 0f)
+        {
+            GameManager manager = GameManager.GetReference();
+            Vector3 toPlayer = manager.Player.transform.position - transform.position;
+            float distance = toPlayer.magnitude;
+            if (distance > manager.MaxAsteroidDistance)
+            {
+                Death();
+            }
+            else
+            {
+                Timer = 15f;
+            }
+        }
+        else
+        {
+            Timer -= Time.deltaTime;
+        }
     }
 
     /// <summary>
@@ -73,7 +95,7 @@ public class Asteroid : MonoBehaviour
             // todo spawn loot here
             Death();
         }
-        transform.localScale = new Vector3(health * 3f, health * 3f, 1f);
+        transform.localScale = new Vector3(health * 3f, health * 3f, health * 3f);
     }
 
     /// <summary>

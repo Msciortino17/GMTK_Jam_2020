@@ -1,6 +1,8 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public enum ControlState
 {
@@ -15,16 +17,20 @@ public class GameManager : MonoBehaviour
 {
     private static GameManager reference;
     
-    // Generation stats
+    // Level info
     public float LevelRadius;
-    public int NumAsteroids;
     
     // References
-    public Transform Asteroids;
     public PlayerShip Player;
     
-    // Prefabs
+    // Asteroid spawning
+    public Transform Asteroids;
     public GameObject AsteroidPrefab;
+    public int NumAsteroids;
+    public float AsteroidSpawnTimer;
+    public float AsteroidSpawnTime;
+    public float MinAsteroidDistance;
+    public float MaxAsteroidDistance;
 
     /// <summary>
     /// Universal method to grab a reference.
@@ -42,28 +48,41 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        AsteroidSpawnTimer = 0f;
+    }
+
+    private void Update()
+    {
         SpawnAsteroids();
     }
 
     private void SpawnAsteroids()
     {
-        for (int i = 0; i < NumAsteroids; i++)
+        if (AsteroidSpawnTimer <= 0f && CurrentAsteroidCount() < NumAsteroids)
         {
-            Quaternion rotation = Quaternion.Euler(0f, 0f, Random.Range(0f, 360f));
-            Vector3 position = GenerateRandomPositionInBounds(50f);
+            Vector3 position = GenerateRandomPositionInBounds(Player.transform.position, MinAsteroidDistance, MaxAsteroidDistance);
+            Vector3 toPlayer = Player.transform.position - position;
+            // Quaternion rotation = Quaternion.Euler(0f, 0f, Random.Range(0f, 360f));
+            Quaternion rotation =  Quaternion.LookRotation(toPlayer, Vector3.up);
             GameObject asteroid = Instantiate(AsteroidPrefab, position, rotation, Asteroids);
             asteroid.GetComponent<Asteroid>().Fire(Random.Range(5f, 15f));
+            
+            AsteroidSpawnTimer = AsteroidSpawnTime;
+        }
+        else
+        {
+            AsteroidSpawnTimer -= Time.deltaTime;
         }
     }
 
-    private Vector3 GenerateRandomPositionInBounds(float minRadius = 0)
+    private Vector3 GenerateRandomPositionInBounds(Vector3 center, float minRadius, float maxRadius)
     {
         float n = Random.Range(-1f, 1f);
         float r = n * 2 * Mathf.PI;
-        float d = Random.Range(minRadius, LevelRadius);
+        float d = Random.Range(minRadius, maxRadius);
         float x = d * Mathf.Cos(r);
         float y = d * Mathf.Sin(r);
-        return new Vector3(x, y, 0f);
+        return new Vector3(x, y, 0f) + center;
     }
 
     /// <summary>
@@ -92,6 +111,14 @@ public class GameManager : MonoBehaviour
         }
 
         return ControlState.OutOfControl;
+    }
+
+    /// <summary>
+    /// Checks how many children the asteroids parent object has to determine asteroid count.
+    /// </summary>
+    private int CurrentAsteroidCount()
+    {
+        return transform.Find("Asteroids").childCount;
     }
     
 }
