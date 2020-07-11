@@ -51,7 +51,7 @@ MonoBehaviour:
   UpgradedSpeed: 0
   StandardDamage: 1
   UpgradedDamage: 3
-  Timer: 2
+  Timer: 5
 --- !u!136 &3194983610362979957
 CapsuleCollider:
   m_ObjectHideFlags: 0

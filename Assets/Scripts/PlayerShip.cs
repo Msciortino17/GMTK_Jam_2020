@@ -35,6 +35,7 @@ public class PlayerShip : MonoBehaviour
     
     // UI
     public RectTransform ControlBar; 
+    public RectTransform HealthBar; 
     
     /// <summary>
     /// Standard start
@@ -108,7 +109,7 @@ public class PlayerShip : MonoBehaviour
     /// <summary>
     /// Lower the control without letting it go negative
     /// </summary>
-    private void DeductControl(float amount)
+    public void DeductControl(float amount)
     {
         Control -= amount;
         if (Control < 0f)
@@ -120,6 +121,23 @@ public class PlayerShip : MonoBehaviour
         Vector2 size = ControlBar.sizeDelta;
         size.x = 500f * (Control / 100f);
         ControlBar.sizeDelta = size;
+    }
+
+    /// <summary>
+    /// Lower the health without letting it go negative
+    /// </summary>
+    public void DeductHealth(float amount)
+    {
+        Health -= amount;
+        if (amount < 0f)
+        {
+            Debug.Log("ded"); // todo reset game
+        }
+        
+        // Update UI
+        Vector2 size = HealthBar.sizeDelta;
+        size.x = 500f * (Health / 100f);
+        HealthBar.sizeDelta = size;
     }
 
     /// <summary>

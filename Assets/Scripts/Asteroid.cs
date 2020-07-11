@@ -4,12 +4,17 @@ using Random = UnityEngine.Random;
 
 public class Asteroid : MonoBehaviour
 {
+    public SpaceObject MySpaceObject;
     public int health;
+
+    public float ShipKnockbackForce;
+    public float AsteroidKnockbackForce;
 
     private void Start()
     {
-        health = Random.Range(3, 10);
-        UpdateSizeOnHealth();
+        MySpaceObject = GetComponent<SpaceObject>();
+        health = Random.Range(1, 5);
+        transform.localScale = new Vector3(health * 3f, health * 3f, 1f);
     }
 
     /// <summary>
@@ -35,22 +40,45 @@ public class Asteroid : MonoBehaviour
         Bullet bullet = other.gameObject.GetComponent<Bullet>();
         if (bullet != null)
         {
-            health -= bullet.IsUpgraded ? bullet.UpgradedDamage : bullet.StandardDamage;
-            if (health <= 0)
-            {
-                // todo spawn loot here
-                Destroy(gameObject);
-            }
-            UpdateSizeOnHealth();
+            int damage = bullet.IsUpgraded ? bullet.UpgradedDamage : bullet.StandardDamage;
+            DeductHealth(damage);
             Destroy(bullet.gameObject);
         }
+    }
+
+    private void OnCollisionEnter(Collision other)
+    {
+        // If we hit the ship, deduct some health, and knock it back.
+        PlayerShip playerShip = other.gameObject.GetComponent<PlayerShip>();
+        if (playerShip != null)
+        {
+            playerShip.DeductHealth(health * 3);
+            playerShip.MySpaceObject.MyRigidBody.AddExplosionForce(ShipKnockbackForce, transform.position, 10f);
+        }
+        
+        MySpaceObject.MyRigidBody.AddExplosionForce(AsteroidKnockbackForce, other.transform.position, 100f);
+        DeductHealth(1);
     }
 
     /// <summary>
     /// The scale should equal the health
     /// </summary>
-    private void UpdateSizeOnHealth()
+    private void DeductHealth(int amount)
     {
-        transform.localScale = new Vector3(health, health, 1f);
+        health -= amount;
+        if (health <= 0)
+        {
+            // todo spawn loot here
+            Death();
+        }
+        transform.localScale = new Vector3(health * 3f, health * 3f, 1f);
+    }
+
+    /// <summary>
+    /// Universal destroy method for the asteroid, used in several spots.
+    /// </summary>
+    private void Death()
+    {
+        Destroy(gameObject);
     }
 }

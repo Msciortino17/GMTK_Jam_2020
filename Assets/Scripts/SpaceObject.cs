@@ -57,8 +57,8 @@ public class SpaceObject : MonoBehaviour
     /// </summary>
     public void ApplyFriction()
     {
-        float x = MyRigidBody.velocity.x * 0.5f;
-        float y = MyRigidBody.velocity.y * 0.5f;
+        float x = MyRigidBody.velocity.x * 0.25f;
+        float y = MyRigidBody.velocity.y * 0.25f;
         MyRigidBody.AddForce(-x, -y, 0f);
     }
     
