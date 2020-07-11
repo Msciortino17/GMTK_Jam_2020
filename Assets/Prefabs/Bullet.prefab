@@ -47,8 +47,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   IsUpgraded: 0
-  StandardSpeed: 10
-  UpgradedSpeed: 0
+  StandardSpeed: 20
+  UpgradedSpeed: 40
   StandardDamage: 1
   UpgradedDamage: 3
   Timer: 5

@@ -607,7 +607,7 @@ MonoBehaviour:
   m_Follow: {fileID: 910778409}
   m_Lens:
     FieldOfView: 60
-    OrthographicSize: 40
+    OrthographicSize: 50
     NearClipPlane: 0.3
     FarClipPlane: 1000
     Dutch: 0
@@ -1257,7 +1257,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 15
+  orthographic size: 20
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -1662,7 +1662,7 @@ MonoBehaviour:
   m_Follow: {fileID: 910778409}
   m_Lens:
     FieldOfView: 60
-    OrthographicSize: 15
+    OrthographicSize: 20
     NearClipPlane: 0.3
     FarClipPlane: 1000
     Dutch: 0
@@ -1728,6 +1728,7 @@ GameObject:
   - component: {fileID: 1485797477}
   - component: {fileID: 1485797479}
   - component: {fileID: 1485797478}
+  - component: {fileID: 1485797480}
   m_Layer: 5
   m_Name: ControlBar
   m_TagString: Untagged
@@ -1791,6 +1792,25 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1485797476}
   m_CullTransparentMesh: 0
+--- !u!114 &1485797480
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1485797476}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1ecc7bb0e727c44e1815ce812eff10fe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MyImage: {fileID: 0}
+  MyRectTransform: {fileID: 0}
+  GameManagerRef: {fileID: 0}
+  CurrentColor: {r: 0, g: 0, b: 0, a: 0}
+  DesiredColor: {r: 0, g: 0, b: 0, a: 0}
+  ColorTransitionTimer: 0
+  PrevControlState: 0
 --- !u!1 &1513150985 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 6407442249189128922, guid: 334bc912be87e4b19ad5fd212b6c5008,
@@ -1980,6 +2000,7 @@ MonoBehaviour:
   LevelRadius: 400
   NumAsteroids: 50
   Asteroids: {fileID: 1770249463}
+  Player: {fileID: 1602525255}
   AsteroidPrefab: {fileID: 343490448597652674, guid: 73e0f1a4a46f549db9185cf23c06b5b6,
     type: 3}
 --- !u!4 &1552840548
@@ -2030,6 +2051,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1602525255 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7620000571542121724, guid: 8e8f4c674d073493bb284f558f05cb72,
+    type: 3}
+  m_PrefabInstance: {fileID: 4144242302810964479}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e8855e784588e47c7a6196e95b33e8ad, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1667446854 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2042157029248184481, guid: f610434b2bb4a42feb308e33fda8305a,
@@ -2711,7 +2744,7 @@ PrefabInstance:
         type: 3}
       propertyPath: ControlBar
       value: 
-      objectReference: {fileID: 1485797477}
+      objectReference: {fileID: 1485797480}
     - target: {fileID: 7620000571542121724, guid: 8e8f4c674d073493bb284f558f05cb72,
         type: 3}
       propertyPath: HealthBar

@@ -34,7 +34,7 @@ public class PlayerShip : MonoBehaviour
     public int Gold;
     
     // UI
-    public RectTransform ControlBar; 
+    public ControlBar ControlBar; 
     public RectTransform HealthBar; 
     
    // Cameras 
@@ -144,9 +144,7 @@ public class PlayerShip : MonoBehaviour
         }
         
         // Update UI
-        Vector2 size = ControlBar.sizeDelta;
-        size.x = 500f * (Control / 100f);
-        ControlBar.sizeDelta = size;
+        ControlBar.UpdateSize(Control);
     }
 
     /// <summary>

@@ -2,6 +2,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum ControlState
+{
+    Stable,
+    Unstable,
+    Extreme,
+    Critical,
+    OutOfControl
+}
+
 public class GameManager : MonoBehaviour
 {
     private static GameManager reference;
@@ -12,6 +21,7 @@ public class GameManager : MonoBehaviour
     
     // References
     public Transform Asteroids;
+    public PlayerShip Player;
     
     // Prefabs
     public GameObject AsteroidPrefab;
@@ -54,6 +64,34 @@ public class GameManager : MonoBehaviour
         float x = d * Mathf.Cos(r);
         float y = d * Mathf.Sin(r);
         return new Vector3(x, y, 0f);
+    }
+
+    /// <summary>
+    /// Returns one of the 5 states depending on the current value of Control the player has.
+    /// </summary>
+    public ControlState GetCurrentControlState()
+    {
+        if (Player.Control > 75f)
+        {
+            return ControlState.Stable;
+        }
+
+        if (Player.Control > 50f)
+        {
+            return ControlState.Unstable;
+        }
+
+        if (Player.Control > 25f)
+        {
+            return ControlState.Extreme;
+        }
+
+        if (Player.Control > 0f)
+        {
+            return ControlState.Critical;
+        }
+
+        return ControlState.OutOfControl;
     }
     
 }
