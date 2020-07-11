@@ -55,8 +55,11 @@ public class Asteroid : MonoBehaviour
             playerShip.DeductHealth(health * 3);
             playerShip.MySpaceObject.MyRigidBody.AddExplosionForce(ShipKnockbackForce, transform.position, 10f);
         }
-        
-        MySpaceObject.MyRigidBody.AddExplosionForce(AsteroidKnockbackForce, other.transform.position, 100f);
+
+        if (other.transform != null)
+        {
+            MySpaceObject.MyRigidBody.AddExplosionForce(AsteroidKnockbackForce, other.transform.position, 100f);
+        }
         DeductHealth(1);
     }
 
