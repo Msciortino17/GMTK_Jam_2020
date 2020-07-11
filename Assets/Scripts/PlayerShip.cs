@@ -37,6 +37,12 @@ public class PlayerShip : MonoBehaviour
     public RectTransform ControlBar; 
     public RectTransform HealthBar; 
     
+   // Cameras 
+   public GameObject NormalCamera;
+   public GameObject ZoomedOutCamera;
+   public bool ZoomedOut;
+   public float ZoomOutCost;
+    
     /// <summary>
     /// Standard start
     /// </summary>
@@ -46,6 +52,7 @@ public class PlayerShip : MonoBehaviour
 
         Health = 100f;
         Control = 100f;
+        ZoomedOut = false;
     }
 
     /// <summary>
@@ -57,6 +64,11 @@ public class PlayerShip : MonoBehaviour
         DebugText.SetText("Speed: " + CurrentSpeed);
         
         UpdateInput();
+
+        if (ZoomedOut)
+        {
+            DeductControl(ZoomOutCost * Time.deltaTime);
+        }
     }
 
     /// <summary>
@@ -103,6 +115,20 @@ public class PlayerShip : MonoBehaviour
             // bullet.transform.position = transform.position;
             bullet.GetComponent<Bullet>().Fire(HasWeaponUpgrade, CurrentSpeed);
             DeductControl(BulletCost);
+        }
+
+        if (Input.GetKeyDown(KeyCode.LeftShift) || Input.GetKeyDown(KeyCode.RightShift))
+        {
+            NormalCamera.SetActive(false);
+            ZoomedOutCamera.SetActive(true);
+            ZoomedOut = true;
+        }
+
+        if (Input.GetKeyUp(KeyCode.LeftShift) || Input.GetKeyUp(KeyCode.RightShift))
+        {
+            NormalCamera.SetActive(true);
+            ZoomedOutCamera.SetActive(false);
+            ZoomedOut = false;
         }
     }
 

@@ -131,7 +131,7 @@ Rigidbody:
   m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 56
+  m_Constraints: 120
   m_CollisionDetection: 0
 --- !u!136 &7880241335180921717
 CapsuleCollider:
@@ -164,20 +164,24 @@ MonoBehaviour:
   UpgradedAcceleration: 1500
   HasSpeedUpgrade: 0
   CurrentSpeed: 0
-  AccelerationCost: 10
+  AccelerationCost: 2
   StandardRotationSpeed: 90
   UpgradedRotationSpeed: 180
   HasRotationUpgrade: 0
-  RotationCost: 10
+  RotationCost: 1
   HasWeaponUpgrade: 0
   BulletPrefab: {fileID: 1968596906884981551, guid: 93ac23582e69c4497850fe01d1c7bd93,
     type: 3}
-  BulletCost: 0
+  BulletCost: 0.5
   Health: 0
   Control: 0
   Gold: 0
   ControlBar: {fileID: 0}
   HealthBar: {fileID: 0}
+  NormalCamera: {fileID: 0}
+  ZoomedOutCamera: {fileID: 0}
+  ZoomedOut: 0
+  ZoomOutCost: 2
 --- !u!114 &5232717504308761244
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -240,7 +244,7 @@ ParticleSystem:
   ringBufferMode: 0
   ringBufferLoopRange: {x: 0, y: 1}
   looping: 1
-  prewarm: 0
+  prewarm: 1
   playOnAwake: 1
   useUnscaledTime: 0
   autoRandomSeed: 1
@@ -4923,7 +4927,7 @@ ParticleSystemRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: -10
   m_RenderMode: 0
   m_SortMode: 0
   m_MinParticleSize: 0
