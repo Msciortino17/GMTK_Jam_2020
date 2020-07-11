@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 /// <summary>
 /// Controller script for the player's ship.
@@ -129,6 +130,12 @@ public class PlayerShip : MonoBehaviour
             NormalCamera.SetActive(true);
             ZoomedOutCamera.SetActive(false);
             ZoomedOut = false;
+        }
+
+        // todo - remove this eventually
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         }
     }
 

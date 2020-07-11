@@ -31,6 +31,17 @@ public class GameManager : MonoBehaviour
     public float AsteroidSpawnTime;
     public float MinAsteroidDistance;
     public float MaxAsteroidDistance;
+    public float MinAsteroidSpeed;
+    public float MaxAsteroidSpeed;
+    
+    // Comet spawning
+    public Transform Comets;
+    public GameObject CometPrefab;
+    public int NumComets;
+    public float CometSpawnTimer;
+    public float CometSpawnTime;
+    public float MinCometSpeed;
+    public float MaxCometSpeed;
 
     /// <summary>
     /// Universal method to grab a reference.
@@ -54,6 +65,7 @@ public class GameManager : MonoBehaviour
     private void Update()
     {
         SpawnAsteroids();
+        SpawnComets();
     }
 
     /// <summary>
@@ -65,7 +77,7 @@ public class GameManager : MonoBehaviour
         if (AsteroidSpawnTimer <= 0f && CurrentAsteroidCount() < NumAsteroids)
         {
             Vector3 position = GenerateRandomPositionInBounds(Player.transform.position, MinAsteroidDistance, MaxAsteroidDistance);
-            if (Physics.SphereCast(position, 1f, Vector3.forward, out RaycastHit hit))
+            if (Physics.SphereCast(position, 20f, Vector3.forward, out RaycastHit hit))
             {
                 return;
             }
@@ -73,13 +85,40 @@ public class GameManager : MonoBehaviour
             Vector3 toPlayer = Player.transform.position - position;
             Quaternion rotation =  Quaternion.LookRotation(toPlayer, Vector3.up);
             GameObject asteroid = Instantiate(AsteroidPrefab, position, rotation, Asteroids);
-            asteroid.GetComponent<Asteroid>().Fire(Random.Range(5f, 15f));
+            asteroid.GetComponent<Asteroid>().Fire(Random.Range(MinAsteroidSpeed, MaxAsteroidSpeed));
             
             AsteroidSpawnTimer = AsteroidSpawnTime;
         }
         else
         {
             AsteroidSpawnTimer -= Time.deltaTime;
+        }
+    }
+
+    /// <summary>
+    /// Similar to the SpawnAsteroids method, but uses a different set of parameters that should be configured for
+    /// rarer but more faster and prettier comets.
+    /// </summary>
+    private void SpawnComets()
+    {
+        if (CometSpawnTimer <= 0f && CurrentCometCount() < NumComets)
+        {
+            Vector3 position = GenerateRandomPositionInBounds(Player.transform.position, MinAsteroidDistance, MaxAsteroidDistance);
+            if (Physics.SphereCast(position, 10f, Vector3.forward, out RaycastHit hit))
+            {
+                return;
+            }
+            
+            Vector3 toPlayer = Player.transform.position - position;
+            Quaternion rotation = Quaternion.LookRotation(toPlayer, Vector3.up);
+            GameObject comet = Instantiate(CometPrefab, position, rotation, Comets);
+            comet.GetComponent<Asteroid>().Fire(Random.Range(MinCometSpeed, MaxCometSpeed));
+            
+            CometSpawnTimer = CometSpawnTime;
+        }
+        else
+        {
+            CometSpawnTimer -= Time.deltaTime;
         }
     }
 
@@ -127,6 +166,14 @@ public class GameManager : MonoBehaviour
     private int CurrentAsteroidCount()
     {
         return transform.Find("Asteroids").childCount;
+    }
+
+    /// <summary>
+    /// Checks how many children the comets parent object has to determine asteroid count.
+    /// </summary>
+    private int CurrentCometCount()
+    {
+        return transform.Find("Comets").childCount;
     }
     
 }

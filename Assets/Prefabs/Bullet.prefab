@@ -28,7 +28,7 @@ Transform:
   m_GameObject: {fileID: 1968596906884981551}
   m_LocalRotation: {x: 0, y: 0, z: 0.7071068, w: 0.7071068}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.5, y: 0.5, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4462246829384566874}
   m_Father: {fileID: 0}
@@ -47,8 +47,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   IsUpgraded: 0
-  StandardSpeed: 20
-  UpgradedSpeed: 40
+  StandardSpeed: 30
+  UpgradedSpeed: 60
   StandardDamage: 1
   UpgradedDamage: 3
   Timer: 5
@@ -60,10 +60,10 @@ CapsuleCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1968596906884981551}
   m_Material: {fileID: 0}
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_Enabled: 1
   m_Radius: 0.5
-  m_Height: 4
+  m_Height: 2
   m_Direction: 0
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!54 &4530596485721676123

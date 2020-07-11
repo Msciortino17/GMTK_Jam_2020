@@ -6,6 +6,7 @@ using UnityEngine;
 public class Bullet : MonoBehaviour
 {
     public bool IsUpgraded;
+    public bool LockedOn;
     
     public float StandardSpeed;
     public float UpgradedSpeed;

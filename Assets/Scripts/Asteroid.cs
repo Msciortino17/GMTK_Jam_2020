@@ -7,6 +7,8 @@ public class Asteroid : MonoBehaviour
     public SpaceObject MySpaceObject;
     public Rigidbody MyRigidBody;
     public int health;
+    public int MinStartHealth;
+    public int MaxStartHealth;
     public float Timer;
 
     public float ShipKnockbackForce;
@@ -16,9 +18,9 @@ public class Asteroid : MonoBehaviour
     {
         MySpaceObject = GetComponent<SpaceObject>();
         MyRigidBody = GetComponent<Rigidbody>();
-        health = Random.Range(1, 5);
+        health = Random.Range(MinStartHealth, MaxStartHealth);
         transform.localScale = new Vector3(health * 3f, health * 3f, health * 3f);
-        Timer = 15f;
+        Timer = 10f;
     }
 
     /// <summary>
@@ -27,7 +29,7 @@ public class Asteroid : MonoBehaviour
     public void Fire(float speed)
     {
         Rigidbody myRigidBody = GetComponent<Rigidbody>();
-        myRigidBody.AddRelativeForce(0f, 0f, speed, ForceMode.Impulse);
+        myRigidBody.AddRelativeForce(0f, 0f, speed * myRigidBody.mass, ForceMode.Impulse);
     }
 
     // Update is called once per frame
@@ -41,13 +43,13 @@ public class Asteroid : MonoBehaviour
             GameManager manager = GameManager.GetReference();
             Vector3 toPlayer = manager.Player.transform.position - transform.position;
             float distance = toPlayer.magnitude;
-            if (distance > manager.MaxAsteroidDistance)
+            if (distance > manager.MinAsteroidDistance)
             {
                 Death();
             }
             else
             {
-                Timer = 15f;
+                Timer = 5f;
             }
         }
         else
@@ -56,22 +58,18 @@ public class Asteroid : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// Blow up the asteroid when hit by bullets
-    /// </summary>
-    private void OnTriggerEnter(Collider other)
+    private void OnCollisionEnter(Collision other)
     {
+        int damage = 1;
+        
+        // Take damage from bullets, and destroy the bullet.
         Bullet bullet = other.gameObject.GetComponent<Bullet>();
         if (bullet != null)
         {
-            int damage = bullet.IsUpgraded ? bullet.UpgradedDamage : bullet.StandardDamage;
-            DeductHealth(damage);
+            damage = bullet.IsUpgraded ? bullet.UpgradedDamage : bullet.StandardDamage;
             Destroy(bullet.gameObject);
         }
-    }
-
-    private void OnCollisionEnter(Collision other)
-    {
+        
         // If we hit the ship, deduct some health, and knock it back.
         PlayerShip playerShip = other.gameObject.GetComponent<PlayerShip>();
         if (playerShip != null)
@@ -81,7 +79,7 @@ public class Asteroid : MonoBehaviour
         }
 
         MyRigidBody.AddExplosionForce(AsteroidKnockbackForce, other.transform.position, 100f);
-        DeductHealth(1);
+        DeductHealth(damage);
     }
 
     /// <summary>
