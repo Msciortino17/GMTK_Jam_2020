@@ -47,6 +47,9 @@ public class Asteroid : MonoBehaviour
             if (state > ControlState.Stable)
             {
                 int stateIntInverse = 5 - (int) state;
+                bool bursted = false;
+                
+                // Changing velocity
                 if (Random.Range(0, stateIntInverse) == 0)
                 {
                     Vector3 direction = Vector3.zero;
@@ -62,6 +65,27 @@ public class Asteroid : MonoBehaviour
                     MyRigidBody.velocity = Vector3.zero;
                     MyRigidBody.AddRelativeForce(direction * power, ForceMode.Impulse);
                     ControlBurst.Play();
+                    bursted = true;
+                }
+                
+                // Changing health
+                if (state > ControlState.Unstable && Random.Range(0, stateIntInverse) == 0)
+                {
+                    if (Random.Range(0, 2) == 0)
+                    {
+                        DeductHealth(1);
+                    }
+                    else
+                    {
+                        DeductHealth(-1);
+                    }
+
+                    Debug.Log("ayy");
+                    // Don't want to burst twice if it happens to change direction and size
+                    if (!bursted)
+                    {
+                        ControlBurst.Play();
+                    }
                 }
             }
 

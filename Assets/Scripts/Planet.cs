@@ -9,9 +9,6 @@ public class Planet : MonoBehaviour
     public Transform Sun;
     public float rotateSpeed;
 
-    public float MinRotateSpeed;
-    public float MaxRotateSpeed;
-
     public float RandomSpeedTimer;
     
     public ParticleSystem ControlBurst;
