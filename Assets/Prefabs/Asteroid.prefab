@@ -132,8 +132,8 @@ MonoBehaviour:
   MyRigidBody: {fileID: 0}
   health: 0
   Timer: 0
-  ShipKnockbackForce: 500
-  AsteroidKnockbackForce: 500
+  ShipKnockbackForce: 200
+  AsteroidKnockbackForce: 200
 --- !u!54 &4066548142289288257
 Rigidbody:
   m_ObjectHideFlags: 0

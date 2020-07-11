@@ -56,13 +56,21 @@ public class GameManager : MonoBehaviour
         SpawnAsteroids();
     }
 
+    /// <summary>
+    /// This will spawn asteroids at a set frequency around the player, and send them flying towards you.
+    /// A sphere cast is done so that asteroids don't spawn on top of things and cause craziness with physics.
+    /// </summary>
     private void SpawnAsteroids()
     {
         if (AsteroidSpawnTimer <= 0f && CurrentAsteroidCount() < NumAsteroids)
         {
             Vector3 position = GenerateRandomPositionInBounds(Player.transform.position, MinAsteroidDistance, MaxAsteroidDistance);
+            if (Physics.SphereCast(position, 1f, Vector3.forward, out RaycastHit hit))
+            {
+                return;
+            }
+            
             Vector3 toPlayer = Player.transform.position - position;
-            // Quaternion rotation = Quaternion.Euler(0f, 0f, Random.Range(0f, 360f));
             Quaternion rotation =  Quaternion.LookRotation(toPlayer, Vector3.up);
             GameObject asteroid = Instantiate(AsteroidPrefab, position, rotation, Asteroids);
             asteroid.GetComponent<Asteroid>().Fire(Random.Range(5f, 15f));
