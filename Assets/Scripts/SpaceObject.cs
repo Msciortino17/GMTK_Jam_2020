@@ -8,12 +8,15 @@ using UnityEngine;
 public class SpaceObject : MonoBehaviour
 {
     public Rigidbody MyRigidBody;
+    public GameManager MyGameManager;
+    public float WrapperTimer;
     
     /// <summary>
     /// Standard start
     /// </summary>
     void Start()
     {
+        MyGameManager = GameManager.GetReference();
         MyRigidBody = GetComponent<Rigidbody>();
     }
 
@@ -22,7 +25,32 @@ public class SpaceObject : MonoBehaviour
     /// </summary>
     void Update()
     {
-        
+        UpdateBounds();
+    }
+
+    /// <summary>
+    /// Keeps the space object within the bounds of the level by wrapping position
+    /// </summary>
+    private void UpdateBounds()
+    {
+        if (WrapperTimer <= 0f)
+        {
+            float distanceSqr = transform.position.sqrMagnitude;
+            float bounds = MyGameManager.LevelRadius;
+            bounds *= bounds;
+            if (distanceSqr > bounds)
+            {
+                Vector3 position = transform.position;
+                position.x = -position.x;
+                position.y = -position.y;
+                transform.position = position;
+                WrapperTimer = 0.5f;
+            }
+        }
+        else
+        {
+            WrapperTimer -= Time.deltaTime;
+        }
     }
 
     /// <summary>

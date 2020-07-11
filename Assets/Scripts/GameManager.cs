@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
+    private static GameManager reference;
+    
     // Generation stats
     public float LevelRadius;
     public int NumAsteroids;
@@ -13,6 +15,19 @@ public class GameManager : MonoBehaviour
     
     // Prefabs
     public GameObject AsteroidPrefab;
+
+    /// <summary>
+    /// Universal method to grab a reference.
+    /// </summary>
+    public static GameManager GetReference()
+    {
+        if (reference == null)
+        {
+            reference = GameObject.Find("Manager").GetComponent<GameManager>();
+        }
+
+        return reference;
+    }
     
     // Start is called before the first frame update
     void Start()
