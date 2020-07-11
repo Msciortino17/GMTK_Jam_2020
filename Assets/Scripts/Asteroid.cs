@@ -9,10 +9,13 @@ public class Asteroid : MonoBehaviour
     public int health;
     public int MinStartHealth;
     public int MaxStartHealth;
-    public float Timer;
+    public float DespawnTimer;
+    public float VelocityChangeTimer;
 
     public float ShipKnockbackForce;
     public float AsteroidKnockbackForce;
+
+    public ParticleSystem ControlBurst;
 
     private void Awake()
     {
@@ -20,7 +23,7 @@ public class Asteroid : MonoBehaviour
         MyRigidBody = GetComponent<Rigidbody>();
         health = Random.Range(MinStartHealth, MaxStartHealth);
         transform.localScale = new Vector3(health * 3f, health * 3f, health * 3f);
-        Timer = 10f;
+        DespawnTimer = 5f;
     }
 
     /// <summary>
@@ -35,12 +38,45 @@ public class Asteroid : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // todo put random stuff in here when control is low
-        
-        // Every 15 seconds, do a distance check and despawn if far away.
-        if (Timer < 0f)
+        if (VelocityChangeTimer < 0f)
         {
             GameManager manager = GameManager.GetReference();
+            
+            // If control levels are unstable, randomly apply forces
+            ControlState state = manager.GetCurrentControlState();
+            if (state > ControlState.Stable)
+            {
+                int stateIntInverse = 5 - (int) state;
+                if (Random.Range(0, stateIntInverse) == 0)
+                {
+                    Vector3 direction = Vector3.zero;
+                    if (Random.Range(0, 2) == 0)
+                    {
+                        direction = (manager.Player.transform.position - transform.position).normalized;
+                    }
+                    else
+                    {
+                        direction = new Vector3(Random.Range(-1f, 1f), Random.Range(-1f, 1f), 0f).normalized;
+                    }
+                    float power = Random.Range(20, 40) * MyRigidBody.mass;
+                    MyRigidBody.velocity = Vector3.zero;
+                    MyRigidBody.AddRelativeForce(direction * power, ForceMode.Impulse);
+                    ControlBurst.Play();
+                }
+            }
+
+            VelocityChangeTimer = 2f;
+        }
+        else
+        {
+            VelocityChangeTimer -= Time.deltaTime;
+        }
+        
+        if (DespawnTimer < 0f)
+        {
+            GameManager manager = GameManager.GetReference();
+            
+            // Do a distance check and despawn if far away.
             Vector3 toPlayer = manager.Player.transform.position - transform.position;
             float distance = toPlayer.magnitude;
             if (distance > manager.MinAsteroidDistance)
@@ -49,12 +85,12 @@ public class Asteroid : MonoBehaviour
             }
             else
             {
-                Timer = 5f;
+                DespawnTimer = 5f;
             }
         }
         else
         {
-            Timer -= Time.deltaTime;
+            DespawnTimer -= Time.deltaTime;
         }
     }
 

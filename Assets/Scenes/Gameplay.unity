@@ -539,7 +539,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 20
+  orthographic size: 25
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -731,7 +731,7 @@ MonoBehaviour:
   m_Follow: {fileID: 910778409}
   m_Lens:
     FieldOfView: 60
-    OrthographicSize: 20
+    OrthographicSize: 25
     NearClipPlane: 0.3
     FarClipPlane: 1000
     Dutch: 0
@@ -912,8 +912,8 @@ MonoBehaviour:
   Comets: {fileID: 1500563791}
   CometPrefab: {fileID: 5391008487304122133, guid: 2259fe2423e6f430d88a3be24a5f35b0,
     type: 3}
-  NumComets: 0
-  CometSpawnTimer: 0
+  NumComets: 5
+  CometSpawnTimer: 10
   CometSpawnTime: 20
   MinCometSpeed: 25
   MaxCometSpeed: 35
@@ -1253,16 +1253,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 4144242303016462162, guid: 8e8f4c674d073493bb284f558f05cb72,
-        type: 3}
-      propertyPath: m_LocalScale.x
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4144242303016462162, guid: 8e8f4c674d073493bb284f558f05cb72,
-        type: 3}
-      propertyPath: m_LocalScale.y
-      value: 1.5
-      objectReference: {fileID: 0}
     - target: {fileID: 4144242303117599190, guid: 8e8f4c674d073493bb284f558f05cb72,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1345,48 +1335,8 @@ PrefabInstance:
       objectReference: {fileID: 454948616}
     - target: {fileID: 7620000571542121724, guid: 8e8f4c674d073493bb284f558f05cb72,
         type: 3}
-      propertyPath: ZoomOutCost
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7620000571542121724, guid: 8e8f4c674d073493bb284f558f05cb72,
-        type: 3}
-      propertyPath: BulletCost
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7620000571542121724, guid: 8e8f4c674d073493bb284f558f05cb72,
-        type: 3}
-      propertyPath: AccelerationCost
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7620000571542121724, guid: 8e8f4c674d073493bb284f558f05cb72,
-        type: 3}
-      propertyPath: StandardRotationSpeed
-      value: 180
-      objectReference: {fileID: 0}
-    - target: {fileID: 7620000571542121724, guid: 8e8f4c674d073493bb284f558f05cb72,
-        type: 3}
-      propertyPath: UpgradedRotationSpeed
-      value: 360
-      objectReference: {fileID: 0}
-    - target: {fileID: 7620000571542121724, guid: 8e8f4c674d073493bb284f558f05cb72,
-        type: 3}
-      propertyPath: StandardAcceleration
-      value: 1000
-      objectReference: {fileID: 0}
-    - target: {fileID: 7620000571542121724, guid: 8e8f4c674d073493bb284f558f05cb72,
-        type: 3}
-      propertyPath: UpgradedAcceleration
-      value: 2000
-      objectReference: {fileID: 0}
-    - target: {fileID: 7880241335180921717, guid: 8e8f4c674d073493bb284f558f05cb72,
-        type: 3}
-      propertyPath: m_Radius
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 7880241335180921717, guid: 8e8f4c674d073493bb284f558f05cb72,
-        type: 3}
-      propertyPath: m_Height
-      value: 1.5
+      propertyPath: DontLowerControl
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8e8f4c674d073493bb284f558f05cb72, type: 3}

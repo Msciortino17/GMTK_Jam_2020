@@ -65,7 +65,12 @@ public class GameManager : MonoBehaviour
     private void Update()
     {
         SpawnAsteroids();
-        SpawnComets();
+
+        if (GetCurrentControlState() > ControlState.Stable)
+        {
+            SpawnComets();
+        }
+        
     }
 
     /// <summary>

@@ -11,6 +11,8 @@ public class PlayerShip : MonoBehaviour
 {
     public SpaceObject MySpaceObject;
 
+    public bool DontLowerControl; // just for testing
+
     // Moving forward
     public float StandardAcceleration;
     public float UpgradedAcceleration;
@@ -137,6 +139,19 @@ public class PlayerShip : MonoBehaviour
         {
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         }
+
+        // todo - remove this eventually
+        if (Input.GetKeyDown(KeyCode.T))
+        {
+            Control -= 5;
+            if (Control < 0f)
+            {
+                Control = 0f;
+            }
+        
+            // Update UI
+            ControlBar.UpdateSize(Control);
+        }
     }
 
     /// <summary>
@@ -144,6 +159,11 @@ public class PlayerShip : MonoBehaviour
     /// </summary>
     public void DeductControl(float amount)
     {
+        if (DontLowerControl)
+        {
+            return;
+        }
+        
         Control -= amount;
         if (Control < 0f)
         {
