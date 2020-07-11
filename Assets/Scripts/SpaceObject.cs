@@ -42,6 +42,16 @@ public class SpaceObject : MonoBehaviour
     }
 
     /// <summary>
+    /// Gently move towards the given point with the given power.
+    /// </summary>
+    public void ApplyGravity(Vector3 center, float power)
+    {
+        Vector3 toCenter = center - transform.position;
+        toCenter.Normalize();
+        MyRigidBody.AddForce(toCenter * power);
+    }
+
+    /// <summary>
     /// Attempts to slow down the object to a speed of 0.
     /// The faster its going, the more force will be used.
     /// </summary>

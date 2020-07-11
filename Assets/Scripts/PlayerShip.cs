@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 /// <summary>
 /// Controller script for the player's ship.
@@ -25,11 +26,15 @@ public class PlayerShip : MonoBehaviour
     // Weapon
     public bool HasWeaponUpgrade;
     public GameObject BulletPrefab;
+    public float BulletCost;
     
     // Stats
     public float Health;
     public float Control;
     public int Gold;
+    
+    // UI
+    public RectTransform ControlBar; 
     
     /// <summary>
     /// Standard start
@@ -60,39 +65,61 @@ public class PlayerShip : MonoBehaviour
     /// </summary>
     private void UpdateInput()
     {
-        if (HoldingUp())
+        if (HoldingUp() && Control > 0.01f)
         {
             float speed = HasSpeedUpgrade ? UpgradedAcceleration : StandardAcceleration;
             MySpaceObject.MoveForward(speed * Time.deltaTime);
             MySpaceObject.ApplyFriction();
+            DeductControl(AccelerationCost * Time.deltaTime);
         }
         
-        if (HoldingDown() && CurrentSpeed > 1f)
+        if (HoldingDown() && CurrentSpeed > 1f && Control > 0.01f)
         {
             float speed = HasSpeedUpgrade ? UpgradedAcceleration : StandardAcceleration;
             MySpaceObject.MoveForward(-speed * 0.25f * Time.deltaTime);
             MySpaceObject.ApplyFriction();
+            DeductControl(AccelerationCost * Time.deltaTime);
         }
 
-        if (HoldingLeft())
+        if (HoldingLeft() && Control > 0.01f)
         {
             float speed = HasRotationUpgrade ? UpgradedRotationSpeed : StandardRotationSpeed;
             MySpaceObject.Rotate(speed * Time.deltaTime);
+            DeductControl(RotationCost * Time.deltaTime);
         }
 
-        if (HoldingRight())
+        if (HoldingRight() && Control > 0.01f)
         {
             float speed = HasRotationUpgrade ? UpgradedRotationSpeed : StandardRotationSpeed;
             MySpaceObject.Rotate(-speed * Time.deltaTime);
+            DeductControl(RotationCost * Time.deltaTime);
         }
 
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.Space) && Control > 0.01f)
         {
             GameObject bullet = Instantiate(BulletPrefab, transform.position, transform.rotation);
             // bullet.transform.rotation = transform.rotation;
             // bullet.transform.position = transform.position;
             bullet.GetComponent<Bullet>().Fire(HasWeaponUpgrade, CurrentSpeed);
+            DeductControl(BulletCost);
         }
+    }
+
+    /// <summary>
+    /// Lower the control without letting it go negative
+    /// </summary>
+    private void DeductControl(float amount)
+    {
+        Control -= amount;
+        if (Control < 0f)
+        {
+            Control = 0f;
+        }
+        
+        // Update UI
+        Vector2 size = ControlBar.sizeDelta;
+        size.x = 500f * (Control / 100f);
+        ControlBar.sizeDelta = size;
     }
 
     /// <summary>
