@@ -10,8 +10,8 @@ public class Bullet : MonoBehaviour
     public float StandardSpeed;
     public float UpgradedSpeed;
 
-    public float StandardDamage;
-    public float UpgradedDamage;
+    public int StandardDamage;
+    public int UpgradedDamage;
 
     public float Timer;
 

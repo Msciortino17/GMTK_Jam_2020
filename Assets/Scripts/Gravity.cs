@@ -20,8 +20,18 @@ public class Gravity : MonoBehaviour
 
     private void Update()
     {
-        foreach (SpaceObject spaceObject in ObjectsToPull)
+        for (int i = 0; i < ObjectsToPull.Count; i++)
         {
+            SpaceObject spaceObject = ObjectsToPull[i];
+            
+            // If the space object is destroyed before it leaves the bounds, do cleanup here.
+            if (spaceObject == null)
+            {
+                ObjectsToPull.RemoveAt(i);
+                i--;
+                continue;
+            }
+            
             spaceObject.ApplyGravity(transform.position, Mass * Time.deltaTime);
         }
     }

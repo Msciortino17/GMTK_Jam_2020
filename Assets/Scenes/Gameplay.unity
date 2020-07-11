@@ -1189,7 +1189,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 10
+  orthographic size: 20
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -1213,7 +1213,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -71.9, z: -10}
+  m_LocalPosition: {x: 82.2, y: -3.5, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -1491,7 +1491,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1249677660}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -71.9, z: -10}
+  m_LocalPosition: {x: 82.2, y: -3.5, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1873243796}
@@ -1520,7 +1520,7 @@ MonoBehaviour:
   m_Follow: {fileID: 910778409}
   m_Lens:
     FieldOfView: 60
-    OrthographicSize: 10
+    OrthographicSize: 20
     NearClipPlane: 0.3
     FarClipPlane: 1000
     Dutch: 0
@@ -1835,10 +1835,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9df73933c66274f2fa63eaa78900cd7e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  LevelRadius: 150
-  NumPlanets: 10
-  Planets: {fileID: 303724405}
-  PlanetPrefab: {fileID: 8477081429208663845, guid: bce2018e0d5bb403b98366796ff16d81,
+  LevelRadius: 400
+  NumAsteroids: 50
+  Asteroids: {fileID: 1770249463}
+  AsteroidPrefab: {fileID: 343490448597652674, guid: 73e0f1a4a46f549db9185cf23c06b5b6,
     type: 3}
 --- !u!4 &1552840548
 Transform:
@@ -1852,6 +1852,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 303724405}
+  - {fileID: 1770249463}
   m_Father: {fileID: 0}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1970,6 +1971,36 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 56
   m_CollisionDetection: 0
+--- !u!1 &1770249462
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1770249463}
+  m_Layer: 0
+  m_Name: Asteroids
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1770249463
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1770249462}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1552840548}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1849093251
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2390,12 +2421,12 @@ PrefabInstance:
     - target: {fileID: 4144242303117599190, guid: 8e8f4c674d073493bb284f558f05cb72,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: 82.2
       objectReference: {fileID: 0}
     - target: {fileID: 4144242303117599190, guid: 8e8f4c674d073493bb284f558f05cb72,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -71.9
+      value: -3.5
       objectReference: {fileID: 0}
     - target: {fileID: 4144242303117599190, guid: 8e8f4c674d073493bb284f558f05cb72,
         type: 3}

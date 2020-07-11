@@ -6,17 +6,29 @@ public class GameManager : MonoBehaviour
 {
     // Generation stats
     public float LevelRadius;
-    public int NumPlanets;
+    public int NumAsteroids;
     
     // References
-    public Transform Planets;
+    public Transform Asteroids;
     
     // Prefabs
-    public GameObject PlanetPrefab;
+    public GameObject AsteroidPrefab;
     
     // Start is called before the first frame update
     void Start()
     {
+        SpawnAsteroids();
+    }
+
+    private void SpawnAsteroids()
+    {
+        for (int i = 0; i < NumAsteroids; i++)
+        {
+            Quaternion rotation = Quaternion.Euler(0f, 0f, Random.Range(0f, 360f));
+            Vector3 position = GenerateRandomPositionInBounds(50f);
+            GameObject asteroid = Instantiate(AsteroidPrefab, position, rotation, Asteroids);
+            asteroid.GetComponent<Asteroid>().Fire(Random.Range(5f, 15f));
+        }
     }
 
     private Vector3 GenerateRandomPositionInBounds(float minRadius = 0)
