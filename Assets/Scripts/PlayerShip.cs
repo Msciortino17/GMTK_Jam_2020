@@ -22,6 +22,10 @@ public class PlayerShip : MonoBehaviour
     public bool HasRotationUpgrade;
     public float RotationCost;
     
+    // Weapon
+    public bool HasWeaponUpgrade;
+    public GameObject BulletPrefab;
+    
     // Stats
     public float Health;
     public float Control;
@@ -62,6 +66,13 @@ public class PlayerShip : MonoBehaviour
             MySpaceObject.MoveForward(speed * Time.deltaTime);
             MySpaceObject.ApplyFriction();
         }
+        
+        if (HoldingDown() && CurrentSpeed > 1f)
+        {
+            float speed = HasSpeedUpgrade ? UpgradedAcceleration : StandardAcceleration;
+            MySpaceObject.MoveForward(-speed * 0.25f * Time.deltaTime);
+            MySpaceObject.ApplyFriction();
+        }
 
         if (HoldingLeft())
         {
@@ -73,6 +84,14 @@ public class PlayerShip : MonoBehaviour
         {
             float speed = HasRotationUpgrade ? UpgradedRotationSpeed : StandardRotationSpeed;
             MySpaceObject.Rotate(-speed * Time.deltaTime);
+        }
+
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            GameObject bullet = Instantiate(BulletPrefab, transform.position, transform.rotation);
+            // bullet.transform.rotation = transform.rotation;
+            // bullet.transform.position = transform.position;
+            bullet.GetComponent<Bullet>().Fire(HasWeaponUpgrade, CurrentSpeed);
         }
     }
 

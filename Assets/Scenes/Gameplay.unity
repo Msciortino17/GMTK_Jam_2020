@@ -864,11 +864,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 2513481602280573468, guid: 8e8f4c674d073493bb284f558f05cb72,
-        type: 3}
-      propertyPath: m_UseGravity
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 4144242303117599190, guid: 8e8f4c674d073493bb284f558f05cb72,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -928,41 +923,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: PlayerShip
-      objectReference: {fileID: 0}
-    - target: {fileID: 7620000571542121724, guid: 8e8f4c674d073493bb284f558f05cb72,
-        type: 3}
-      propertyPath: MaxSpeed
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 7620000571542121724, guid: 8e8f4c674d073493bb284f558f05cb72,
-        type: 3}
-      propertyPath: StandardAcceleration
-      value: 750
-      objectReference: {fileID: 0}
-    - target: {fileID: 7620000571542121724, guid: 8e8f4c674d073493bb284f558f05cb72,
-        type: 3}
-      propertyPath: UpgradedAcceleration
-      value: 1500
-      objectReference: {fileID: 0}
-    - target: {fileID: 7620000571542121724, guid: 8e8f4c674d073493bb284f558f05cb72,
-        type: 3}
-      propertyPath: StandardRotationPower
-      value: 90
-      objectReference: {fileID: 0}
-    - target: {fileID: 7620000571542121724, guid: 8e8f4c674d073493bb284f558f05cb72,
-        type: 3}
-      propertyPath: MaxRotationSpeed
-      value: 90
-      objectReference: {fileID: 0}
-    - target: {fileID: 7620000571542121724, guid: 8e8f4c674d073493bb284f558f05cb72,
-        type: 3}
-      propertyPath: StandardRotationSpeed
-      value: 90
-      objectReference: {fileID: 0}
-    - target: {fileID: 7620000571542121724, guid: 8e8f4c674d073493bb284f558f05cb72,
-        type: 3}
-      propertyPath: UpgradedRotationSpeed
-      value: 180
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8e8f4c674d073493bb284f558f05cb72, type: 3}

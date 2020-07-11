@@ -34,7 +34,7 @@ public class GameManager : MonoBehaviour
             do
             {
                 // Generate a random position
-                planet.transform.position = GenerateRandomPositionInBounds(20f);
+                planet.transform.position = GenerateRandomPositionInBounds(0f);
             
                 // Make sure it's not near another planet by comparing distance against others generated
                 foreach (GameObject generatedPlanet in generatedPlanets)
