@@ -2042,6 +2042,16 @@ PrefabInstance:
       propertyPath: NumComets
       value: 5
       objectReference: {fileID: 0}
+    - target: {fileID: 8852008418881249438, guid: 3cc04bf2ad94743b091f2bf273ae8b56,
+        type: 3}
+      propertyPath: CometSpawnTimer
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 8852008418881249438, guid: 3cc04bf2ad94743b091f2bf273ae8b56,
+        type: 3}
+      propertyPath: CometSpawnTime
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8852008418881249439, guid: 3cc04bf2ad94743b091f2bf273ae8b56,
         type: 3}
       propertyPath: m_Name

@@ -20,13 +20,14 @@ public class Asteroid : MonoBehaviour
     public GameManager Manager;
 
     public GameObject ControlCrystalPrefab;
+    public GameObject BreakParticlePrefab;
 
     private void Awake()
     {
         MySpaceObject = GetComponent<SpaceObject>();
         MyRigidBody = GetComponent<Rigidbody>();
         health = Random.Range(MinStartHealth, MaxStartHealth);
-        transform.localScale = new Vector3(health * 3f, health * 3f, health * 3f);
+        transform.localScale = new Vector3((health + 1) * 3f, (health + 1) * 3f, (health + 1) * 3f);
         DespawnTimer = 5f;
         Manager = GameManager.GetReference();
     }
@@ -131,6 +132,7 @@ public class Asteroid : MonoBehaviour
         {
             damage = bullet.IsUpgraded ? bullet.UpgradedDamage : bullet.StandardDamage;
             Destroy(bullet.gameObject);
+            Instantiate(bullet.ExplosionPrefab, bullet.transform.position, Quaternion.identity);
             hitByBullet = true;
         }
         
@@ -152,13 +154,14 @@ public class Asteroid : MonoBehaviour
     private void DeductHealth(int amount, bool killedByPlayer)
     {
         health -= amount;
+        Instantiate(BreakParticlePrefab, transform.position, Quaternion.identity);
         if (killedByPlayer)
         {
             Manager.Player.Score += IsComet ? 500 : 100;
         }
         if (health <= 0)
         {
-            if (killedByPlayer && (IsComet || Random.Range(0, 5) == 0))
+            if (killedByPlayer && (IsComet || Random.Range(0, 4) == 0))
             {
                 Instantiate(ControlCrystalPrefab, transform.position, Quaternion.identity);
             }
@@ -168,7 +171,7 @@ public class Asteroid : MonoBehaviour
             }
             Death();
         }
-        transform.localScale = new Vector3(health * 3f, health * 3f, health * 3f);
+        transform.localScale = new Vector3((health + 1) * 3f, (health + 1) * 3f, (health + 1) * 3f);
     }
 
     /// <summary>

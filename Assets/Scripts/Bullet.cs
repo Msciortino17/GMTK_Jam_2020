@@ -16,6 +16,8 @@ public class Bullet : MonoBehaviour
 
     public float Timer;
 
+    public GameObject ExplosionPrefab;
+
     /// <summary>
     /// Should be called by the player's ship after orienting it properly.
     /// </summary>
@@ -38,6 +40,7 @@ public class Bullet : MonoBehaviour
         if (Timer < 0f)
         {
             Destroy(gameObject);
+            Instantiate(ExplosionPrefab, transform.position, Quaternion.identity);
         }
     }
 }
