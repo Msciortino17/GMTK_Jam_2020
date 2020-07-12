@@ -56,6 +56,14 @@ MonoBehaviour:
   Timer: 5
   ExplosionPrefab: {fileID: 749899691194360143, guid: 311a575d89d084a9896256000b115e8a,
     type: 3}
+  ExplosionSounds:
+  - {fileID: 8300000, guid: 06725c7af84324a8a9ebae4d23b98001, type: 3}
+  - {fileID: 8300000, guid: 59e976c79cdc441078db808d08f55f74, type: 3}
+  - {fileID: 8300000, guid: b8909a058d0864a75b5e5ace8bd5c750, type: 3}
+  - {fileID: 8300000, guid: 499fba65ade144373857c1e97822ce26, type: 3}
+  - {fileID: 8300000, guid: 6d3098b9671234a168837bba0834de7d, type: 3}
+  SoundEffectPrefab: {fileID: 7900386377967787249, guid: 3a0be742c6e5c4336b27dda6cad6c3d8,
+    type: 3}
 --- !u!136 &3194983610362979957
 CapsuleCollider:
   m_ObjectHideFlags: 0

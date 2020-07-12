@@ -50,6 +50,9 @@ MonoBehaviour:
   CurrentState: 0
   Manager: {fileID: 0}
   Timer: 0
+  WarpSound: {fileID: 8300000, guid: 58430e3c1d3574dbc9734531f2634a75, type: 3}
+  SoundEffectPrefab: {fileID: 7900386377967787249, guid: 3a0be742c6e5c4336b27dda6cad6c3d8,
+    type: 3}
 --- !u!135 &332965583787135273
 SphereCollider:
   m_ObjectHideFlags: 0

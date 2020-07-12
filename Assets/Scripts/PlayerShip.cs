@@ -79,6 +79,7 @@ public class PlayerShip : MonoBehaviour
     // Sounds
     public AudioClip[] BlasterSounds;
     public AudioSource BlasterAudioSource;
+    public AudioSource ShieldBounceAudioSource;
     
     /// <summary>
     /// Standard start
@@ -371,6 +372,7 @@ public class PlayerShip : MonoBehaviour
             DeductHealth(20f);
             ShieldBurst.Play();
             MySpaceObject.MyRigidBody.AddExplosionForce(2000f, other.transform.position, 1000f);
+            ShieldBounceAudioSource.Play();
         }
     }
 }

@@ -17,6 +17,8 @@ public class WormHole : MonoBehaviour
     public WormHoleState CurrentState;
     public GameManager Manager;
     public float Timer;
+    public AudioClip WarpSound;
+    public GameObject SoundEffectPrefab;
     
     // Start is called before the first frame update
     void Start()
@@ -82,6 +84,9 @@ public class WormHole : MonoBehaviour
                 PlayerRef.ControlBar.UpdateSize(PlayerRef.Control);
                 PlayerRef.UpdateStarParticles();
                 Manager.WormHoleRef = null;
+                AudioSource sound = Instantiate(SoundEffectPrefab).GetComponent<AudioSource>();
+                sound.clip = WarpSound;
+                sound.Play();
                 Destroy(gameObject);
             }
         }

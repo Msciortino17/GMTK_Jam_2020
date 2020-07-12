@@ -44,7 +44,10 @@ public class Asteroid : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (VelocityChangeTimer < 0f)
+        // this speed check is a last minute hack to try and prevent deadlock when player is out of control.
+        // should increase the odds of an asteroid hitting them and getting them going.
+        float playerSpeed = Manager.Player.MySpaceObject.MyRigidBody.velocity.magnitude;
+        if (VelocityChangeTimer < 0f && playerSpeed > 8f)
         {
             // If control levels are unstable, randomly apply forces
             ControlState state = Manager.GetCurrentControlState();
@@ -131,6 +134,7 @@ public class Asteroid : MonoBehaviour
         if (bullet != null)
         {
             damage = bullet.IsUpgraded ? bullet.UpgradedDamage : bullet.StandardDamage;
+            bullet.ExplosionSound();
             Destroy(bullet.gameObject);
             Instantiate(bullet.ExplosionPrefab, bullet.transform.position, Quaternion.identity);
             hitByBullet = true;
@@ -143,6 +147,7 @@ public class Asteroid : MonoBehaviour
             playerShip.DeductHealth(health * 3);
             playerShip.ShieldBurst.Play();
             playerShip.MySpaceObject.MyRigidBody.AddExplosionForce(ShipKnockbackForce, transform.position, 10f);
+            playerShip.ShieldBounceAudioSource.Play();
         }
 
         MyRigidBody.AddExplosionForce(AsteroidKnockbackForce, other.transform.position, 100f);
