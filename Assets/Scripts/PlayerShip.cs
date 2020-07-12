@@ -140,6 +140,12 @@ public class PlayerShip : MonoBehaviour
         {
             WeaponTimer -= Time.deltaTime;
         }
+
+        // Steady depletion of shields when out of control.
+        if (Control <= 0.01f)
+        {
+            Health -= 1f * Time.deltaTime;
+        }
     }
 
     /// <summary>

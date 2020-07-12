@@ -105,17 +105,17 @@ public class GameManager : MonoBehaviour
         {
             return;
         }
-        
+
+        if (GetCurrentControlState() > ControlState.Unstable)
+        {
+            SpawnWormhole();
+        }
+
         SpawnAsteroids();
 
         if (GetCurrentControlState() > ControlState.Stable)
         {
             SpawnComets();
-        }
-
-        if (GetCurrentControlState() > ControlState.Unstable)
-        {
-            SpawnWormhole();
         }
         
     }
@@ -126,7 +126,16 @@ public class GameManager : MonoBehaviour
     /// </summary>
     private void SpawnAsteroids()
     {
-        if (AsteroidSpawnTimer <= 0f && CurrentAsteroidCount() < NumAsteroids)
+        // If the player is out of control and moving, spawn less asteroids to improve their chances of
+        // drifting into the wormhole.
+        int asteroidNum = NumAsteroids;
+        float playerSpeed = Player.MySpaceObject.MyRigidBody.velocity.magnitude;
+        if (GetCurrentControlState() == ControlState.OutOfControl && playerSpeed > 8f)
+        {
+            asteroidNum = NumAsteroids / 5;
+        }
+        
+        if (AsteroidSpawnTimer <= 0f && CurrentAsteroidCount() < asteroidNum)
         {
             float minDistance = (GetCurrentControlState() > ControlState.Extreme
                 ? MinAsteroidDistance * 0.3f
