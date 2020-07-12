@@ -205,32 +205,6 @@ public class PlayerShip : MonoBehaviour
             ZoomedOutCamera.SetActive(false);
             ZoomedOut = false;
         }
-
-        // todo - remove this eventually
-        if (Input.GetKeyDown(KeyCode.R))
-        {
-            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-        }
-
-        // todo - remove this eventually
-        if (Input.GetKeyDown(KeyCode.T))
-        {
-            Control -= 5;
-            if (Control < 0f)
-            {
-                Control = 0f;
-            }
-        
-            // Update UI
-            ControlBar.UpdateSize(Control);
-            
-            UpdateStarParticles();
-        }
-
-        if (Input.GetKeyDown(KeyCode.K))
-        {
-            DeductHealth(20f);
-        }
     }
 
     /// <summary>
