@@ -15,6 +15,8 @@ public class ControlBar : MonoBehaviour
     public float ColorTransitionTimer;
     public ControlState PrevControlState;
     public Dictionary<ControlState, Color> ColorDictionary;
+
+    public Text StatusText;
     
     // Start is called before the first frame update
     void Start()
@@ -30,7 +32,7 @@ public class ControlBar : MonoBehaviour
         ColorDictionary.Add(ControlState.Unstable, Color.yellow);
         ColorDictionary.Add(ControlState.Extreme, new Color(1f,0.5f,0f)); // orange
         ColorDictionary.Add(ControlState.Critical, Color.red);
-        ColorDictionary.Add(ControlState.OutOfControl, Color.black);
+        ColorDictionary.Add(ControlState.OutOfControl, Color.red);
     }
 
     // Update is called once per frame
@@ -49,12 +51,29 @@ public class ControlBar : MonoBehaviour
         if (ColorTransitionTimer > 0f)
         {
             MyImage.color = Color.Lerp(DesiredColor, CurrentColor, ColorTransitionTimer);
+            StatusText.color = MyImage.color;
             ColorTransitionTimer -= Time.deltaTime;
             if (ColorTransitionTimer <= 0f)
             {
                 ColorTransitionTimer = 0f;
                 CurrentColor = DesiredColor;
             }
+        }
+        
+        // Flash the status text when out of control
+        if (currentState == ControlState.OutOfControl)
+        {
+            StatusText.text = "Warning: Out of control";
+            Color color = StatusText.color;
+            color.a = Mathf.PingPong(Time.time * 2f, 1);
+            StatusText.color = color;
+        }
+        else
+        {
+            StatusText.text = currentState.ToString();
+            Color color = StatusText.color;
+            color.a = 1f;
+            StatusText.color = color;
         }
         
         // Want to set this at the end of all logic for this frame.

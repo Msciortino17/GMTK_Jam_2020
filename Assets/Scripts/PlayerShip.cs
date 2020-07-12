@@ -42,7 +42,8 @@ public class PlayerShip : MonoBehaviour
     
     // UI
     public ControlBar ControlBar; 
-    public RectTransform HealthBar; 
+    public RectTransform HealthBar;
+    public Text HealthText;
     
     // Cameras 
     public GameObject NormalCamera;
@@ -269,6 +270,7 @@ public class PlayerShip : MonoBehaviour
         Health -= amount;
         if (Health <= 0f)
         {
+            Health = 0f;
             Dead = true;
             MySprite.SetActive(false);
             MyCollider.enabled = false;
@@ -281,6 +283,8 @@ public class PlayerShip : MonoBehaviour
         Vector2 size = HealthBar.sizeDelta;
         size.x = 500f * (Health / 100f);
         HealthBar.sizeDelta = size;
+
+        HealthText.text = (int) Health + "%";
     }
 
     /// <summary>
