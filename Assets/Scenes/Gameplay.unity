@@ -1856,7 +1856,7 @@ MonoBehaviour:
   Asteroids: {fileID: 1770249463}
   AsteroidPrefab: {fileID: 343490448597652674, guid: 73e0f1a4a46f549db9185cf23c06b5b6,
     type: 3}
-  NumAsteroids: 0
+  NumAsteroids: 20
   AsteroidSpawnTimer: 0
   AsteroidSpawnTime: 1
   MinAsteroidDistance: 80

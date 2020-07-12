@@ -49,6 +49,7 @@ MonoBehaviour:
   PlayerRef: {fileID: 0}
   CurrentState: 0
   Manager: {fileID: 0}
+  Timer: 0
 --- !u!135 &332965583787135273
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -262,7 +263,7 @@ PrefabInstance:
     - target: {fileID: 3304713326641985630, guid: f114dd898c2ba450ab52117564dc229f,
         type: 3}
       propertyPath: prewarm
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3304713326641985630, guid: f114dd898c2ba450ab52117564dc229f,
         type: 3}
@@ -413,6 +414,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: WormHoleParticlesOuter
+      objectReference: {fileID: 0}
+    - target: {fileID: 8782573646403692898, guid: 6600f883bb75d4ced8c804f2a2a72591,
+        type: 3}
+      propertyPath: prewarm
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6600f883bb75d4ced8c804f2a2a72591, type: 3}

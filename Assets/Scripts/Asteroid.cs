@@ -80,7 +80,6 @@ public class Asteroid : MonoBehaviour
                         DeductHealth(-1);
                     }
 
-                    Debug.Log("ayy");
                     // Don't want to burst twice if it happens to change direction and size
                     if (!bursted)
                     {

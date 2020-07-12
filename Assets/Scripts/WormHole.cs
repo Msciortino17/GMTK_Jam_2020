@@ -24,7 +24,7 @@ public class WormHole : MonoBehaviour
         CurrentState = WormHoleState.Dormant;
         Manager = GameManager.GetReference();
         PlayerRef = Manager.Player;
-        Timer = 60f;
+        Timer = 15f;
     }
 
     // Update is called once per frame
@@ -80,6 +80,7 @@ public class WormHole : MonoBehaviour
                 Manager.NonZoomedInCameras.SetActive(true);
                 PlayerRef.Control = 100f;
                 PlayerRef.ControlBar.UpdateSize(PlayerRef.Control);
+                PlayerRef.UpdateStarParticles();
                 Manager.WormHoleRef = null;
                 Destroy(gameObject);
             }

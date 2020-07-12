@@ -46,7 +46,12 @@ public class PlayerShip : MonoBehaviour
     public bool ZoomedOut;
     public float ZoomOutCost;
    
+    // Particles
     public ParticleSystem ControlBurst;
+    public ParticleSystem StarsUnstable;
+    public ParticleSystem StarsExtreme;
+    public ParticleSystem StarsCritical;
+    public ParticleSystem StarsOoC;
     
     // Trajectory calculation
     public Vector3 Trajectory;
@@ -170,6 +175,8 @@ public class PlayerShip : MonoBehaviour
         
             // Update UI
             ControlBar.UpdateSize(Control);
+            
+            UpdateStarParticles();
         }
     }
 
@@ -191,6 +198,16 @@ public class PlayerShip : MonoBehaviour
         
         // Update UI
         ControlBar.UpdateSize(Control);
+        
+        UpdateStarParticles();
+    }
+
+    public void UpdateStarParticles()
+    {
+        StarsUnstable.gameObject.SetActive(Control < 76f);
+        StarsExtreme.gameObject.SetActive(Control < 51f);
+        StarsCritical.gameObject.SetActive(Control < 26f);
+        StarsOoC.gameObject.SetActive(Control <= 1f);
     }
 
     /// <summary>

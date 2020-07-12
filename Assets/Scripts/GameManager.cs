@@ -97,7 +97,10 @@ public class GameManager : MonoBehaviour
     {
         if (AsteroidSpawnTimer <= 0f && CurrentAsteroidCount() < NumAsteroids)
         {
-            Vector3 position = GenerateRandomPositionInBounds(Player.transform.position, MinAsteroidDistance, MaxAsteroidDistance);
+            float minDistance = (GetCurrentControlState() > ControlState.Extreme
+                ? MinAsteroidDistance * 0.3f
+                : MinAsteroidDistance);
+            Vector3 position = GenerateRandomPositionInBounds(Player.transform.position, minDistance, MaxAsteroidDistance);
             if (Physics.SphereCast(position, 20f, Vector3.forward, out RaycastHit hit))
             {
                 return;
@@ -105,8 +108,10 @@ public class GameManager : MonoBehaviour
             
             Vector3 toPlayer = Player.transform.position - position;
             Quaternion rotation =  Quaternion.LookRotation(toPlayer, Vector3.up);
-            GameObject asteroid = Instantiate(AsteroidPrefab, position, rotation, Asteroids);
+            GameObject asteroidObject = Instantiate(AsteroidPrefab, position, rotation, Asteroids);
+            Asteroid asteroid = asteroidObject.GetComponent<Asteroid>();
             asteroid.GetComponent<Asteroid>().Fire(Random.Range(MinAsteroidSpeed, MaxAsteroidSpeed));
+            asteroid.ControlBurst.Play();
             
             AsteroidSpawnTimer = AsteroidSpawnTime;
         }
