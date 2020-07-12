@@ -16,6 +16,7 @@ public enum ControlState
 public class GameManager : MonoBehaviour
 {
     private static GameManager reference;
+    public bool MainMenu;
     
     // Level info
     public float LevelRadius;
@@ -75,6 +76,11 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
+        if (MainMenu)
+        {
+            return;
+        }
+        
         SpawnAsteroids();
 
         if (GetCurrentControlState() > ControlState.Stable)
@@ -189,6 +195,11 @@ public class GameManager : MonoBehaviour
     /// </summary>
     public ControlState GetCurrentControlState()
     {
+        if (MainMenu)
+        {
+            return ControlState.Stable;
+        }
+        
         if (Player.Control > 75f)
         {
             return ControlState.Stable;
