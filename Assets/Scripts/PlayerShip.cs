@@ -1,8 +1,10 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using Random = UnityEngine.Random;
 
 /// <summary>
 /// Controller script for the player's ship.
@@ -34,8 +36,9 @@ public class PlayerShip : MonoBehaviour
     
     // Stats
     public float Health;
+    public float HealthTimer;
     public float Control;
-    public int Gold;
+    public int Score;
     
     // UI
     public ControlBar ControlBar; 
@@ -103,6 +106,11 @@ public class PlayerShip : MonoBehaviour
         else
         {
             TrajectoryTimer -= Time.deltaTime;
+        }
+
+        if (HealthTimer >= 0f)
+        {
+            HealthTimer -= Time.deltaTime;
         }
     }
 
@@ -223,6 +231,14 @@ public class PlayerShip : MonoBehaviour
     /// </summary>
     public void DeductHealth(float amount)
     {
+        // This gives the players some wiggle in case of weird collision.
+        if (HealthTimer > 0f)
+        {
+            return;
+        }
+
+        HealthTimer = 0.5f;
+        
         Health -= amount;
         if (amount < 0f)
         {
@@ -294,5 +310,16 @@ public class PlayerShip : MonoBehaviour
     {
         return Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow);
     }
-    
+
+    /// <summary>
+    /// Explode off of planets, taking a lot of damage
+    /// </summary>
+    private void OnCollisionEnter(Collision other)
+    {
+        if (other.gameObject.layer == 10)
+        {
+            DeductHealth(20f);
+            MySpaceObject.MyRigidBody.AddExplosionForce(2000f, other.transform.position, 1000f);
+        }
+    }
 }
