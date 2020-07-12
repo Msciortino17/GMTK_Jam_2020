@@ -10,6 +10,7 @@ using UnityEngine.SceneManagement;
 public class PlayerShip : MonoBehaviour
 {
     public SpaceObject MySpaceObject;
+    private GameManager Manager;
 
     public bool DontLowerControl; // just for testing
 
@@ -58,12 +59,17 @@ public class PlayerShip : MonoBehaviour
     public Vector3 PrevPosition;
     public float TrajectoryTimer;
     
+    // Micro jumps
+    public float MicroJumpTimer;
+    public float MicroJumpTime;
+    
     /// <summary>
     /// Standard start
     /// </summary>
     void Start()
     {
         MySpaceObject = GetComponent<SpaceObject>();
+        Manager = GameManager.GetReference();
 
         Health = 100f;
         Control = 100f;
@@ -79,6 +85,8 @@ public class PlayerShip : MonoBehaviour
         DebugText.SetText("Speed: " + CurrentSpeed);
         
         UpdateInput();
+        
+        UpdateMicroJumps();
 
         if (ZoomedOut)
         {
@@ -225,6 +233,34 @@ public class PlayerShip : MonoBehaviour
         Vector2 size = HealthBar.sizeDelta;
         size.x = 500f * (Health / 100f);
         HealthBar.sizeDelta = size;
+    }
+
+    /// <summary>
+    /// At critical levels of control, small jumps in space will occur.
+    /// </summary>
+    public void UpdateMicroJumps()
+    {
+        if (Manager.GetCurrentControlState() > ControlState.Extreme)
+        {
+            if (MicroJumpTimer <= 0f)
+            {
+                if (Random.Range(0, 2) == 0)
+                {
+                    Vector3 newPosition = Manager.GenerateRandomPositionInBounds(transform.position, 5, 20);
+                    if (!Physics.SphereCast(newPosition, 10f, Vector3.forward, out RaycastHit hit))
+                    {
+                        transform.position = newPosition;
+                        ControlBurst.Play();
+                    }
+                }
+                
+                MicroJumpTimer = MicroJumpTime;
+            }
+            else
+            {
+                MicroJumpTimer -= Time.deltaTime;
+            }
+        }
     }
 
     /// <summary>

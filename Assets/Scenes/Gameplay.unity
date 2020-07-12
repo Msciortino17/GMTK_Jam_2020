@@ -2351,6 +2351,11 @@ PrefabInstance:
       propertyPath: DontLowerControl
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 7620000571542121724, guid: 8e8f4c674d073493bb284f558f05cb72,
+        type: 3}
+      propertyPath: MicroJumpTime
+      value: 15
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8e8f4c674d073493bb284f558f05cb72, type: 3}
 --- !u!1001 &6435124022321714163
