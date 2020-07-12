@@ -193,9 +193,8 @@ public class PlayerShip : MonoBehaviour
             // bullet.transform.position = transform.position;
             bullet.GetComponent<Bullet>().Fire(HasWeaponUpgrade, CurrentSpeed);
             DeductControl(BulletCost);
+            PlayBlaster();
             WeaponTimer = 0.25f;
-            BlasterAudioSource.clip = BlasterSounds[Random.Range(0, BlasterSounds.Length)];
-            BlasterAudioSource.Play();
         }
 
         if (Input.GetKeyDown(KeyCode.LeftShift) || Input.GetKeyDown(KeyCode.RightShift))
@@ -211,6 +210,12 @@ public class PlayerShip : MonoBehaviour
             ZoomedOutCamera.SetActive(false);
             ZoomedOut = false;
         }
+    }
+
+    public void PlayBlaster()
+    {
+        BlasterAudioSource.clip = BlasterSounds[Random.Range(0, BlasterSounds.Length)];
+        BlasterAudioSource.Play();
     }
 
     /// <summary>

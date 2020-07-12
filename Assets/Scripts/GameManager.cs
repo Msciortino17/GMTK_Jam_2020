@@ -202,7 +202,7 @@ public class GameManager : MonoBehaviour
 
             if (state == ControlState.OutOfControl)
             {
-                position = Player.Trajectory.normalized * 350f;
+                position = Player.Trajectory.normalized * 250f;
                 position += Player.transform.position;
             }
             WormHoleRef = Instantiate(WormHolePrefab, position, Quaternion.identity, transform).GetComponent<WormHole>();

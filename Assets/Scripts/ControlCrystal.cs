@@ -13,6 +13,7 @@ public class ControlCrystal : MonoBehaviour
             player.DeductControl(-20f);
             player.ControlBurst.Play();
             player.Score += 100;
+            player.PlayBlaster();
             Destroy(gameObject);
         }
     }

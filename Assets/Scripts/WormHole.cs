@@ -26,7 +26,7 @@ public class WormHole : MonoBehaviour
         CurrentState = WormHoleState.Dormant;
         Manager = GameManager.GetReference();
         PlayerRef = Manager.Player;
-        Timer = 15f;
+        Timer = (Manager.GetCurrentControlState() == ControlState.OutOfControl) ? 5f : 15f;
     }
 
     // Update is called once per frame
