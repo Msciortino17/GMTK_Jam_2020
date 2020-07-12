@@ -42,6 +42,17 @@ public class GameManager : MonoBehaviour
     public float CometSpawnTime;
     public float MinCometSpeed;
     public float MaxCometSpeed;
+    
+    // Wormhole spawning
+    public WormHole WormHoleRef;
+    public GameObject WormHolePrefab;
+    public float WormholeSpawnTimer;
+    public float WormholeSpawnTime;
+
+    public GameObject ZoomedInCamera;
+    public GameObject NormalCamera;
+    public GameObject ZoomedOutCamera;
+    public GameObject NonZoomedInCameras;
 
     /// <summary>
     /// Universal method to grab a reference.
@@ -69,6 +80,11 @@ public class GameManager : MonoBehaviour
         if (GetCurrentControlState() > ControlState.Stable)
         {
             SpawnComets();
+        }
+
+        if (GetCurrentControlState() > ControlState.Unstable)
+        {
+            SpawnWormhole();
         }
         
     }
@@ -127,7 +143,33 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    private Vector3 GenerateRandomPositionInBounds(Vector3 center, float minRadius, float maxRadius)
+    /// <summary>
+    /// Spawns the wormhole randomly around the player.
+    /// If out of control, will prioritize spawning it along the player's trajectory.
+    /// </summary>
+    private void SpawnWormhole()
+    {
+        if (WormholeSpawnTimer <= 0f && WormHoleRef == null)
+        {
+            Vector3 position = GenerateRandomPositionInBounds(Player.transform.position, 
+                MinAsteroidDistance * 2f, MaxAsteroidDistance * 2f);
+
+            if (GetCurrentControlState() == ControlState.OutOfControl)
+            {
+                position = Player.Trajectory.normalized * 350f;
+                position += Player.transform.position;
+            }
+            WormHoleRef = Instantiate(WormHolePrefab, position, Quaternion.identity, transform).GetComponent<WormHole>();
+            
+            WormholeSpawnTimer = WormholeSpawnTime;
+        }
+        else
+        {
+            WormholeSpawnTimer -= Time.deltaTime;
+        }
+    }
+
+    public Vector3 GenerateRandomPositionInBounds(Vector3 center, float minRadius, float maxRadius)
     {
         float n = Random.Range(-1f, 1f);
         float r = n * 2 * Mathf.PI;

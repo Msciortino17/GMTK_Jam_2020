@@ -83,11 +83,23 @@ public class SpaceObject : MonoBehaviour
     /// <summary>
     /// Attempts to slow down the object to a speed of 0.
     /// The faster its going, the more force will be used.
+    /// Doesn't go too crazy to allow some resistance.
     /// </summary>
     public void ApplyFriction()
     {
         float x = MyRigidBody.velocity.x * 0.25f;
         float y = MyRigidBody.velocity.y * 0.25f;
+        MyRigidBody.AddForce(-x, -y, 0f);
+    }
+
+    /// <summary>
+    /// Attempts to slow down the object to a speed of 0.
+    /// The faster its going, the more force will be used.
+    /// </summary>
+    public void ApplyHeavyFriction()
+    {
+        float x = MyRigidBody.velocity.x * 0.75f;
+        float y = MyRigidBody.velocity.y * 0.75f;
         MyRigidBody.AddForce(-x, -y, 0f);
     }
     

@@ -40,11 +40,18 @@ public class PlayerShip : MonoBehaviour
     public ControlBar ControlBar; 
     public RectTransform HealthBar; 
     
-   // Cameras 
-   public GameObject NormalCamera;
-   public GameObject ZoomedOutCamera;
-   public bool ZoomedOut;
-   public float ZoomOutCost;
+    // Cameras 
+    public GameObject NormalCamera;
+    public GameObject ZoomedOutCamera;
+    public bool ZoomedOut;
+    public float ZoomOutCost;
+   
+    public ParticleSystem ControlBurst;
+    
+    // Trajectory calculation
+    public Vector3 Trajectory;
+    public Vector3 PrevPosition;
+    public float TrajectoryTimer;
     
     /// <summary>
     /// Standard start
@@ -71,6 +78,18 @@ public class PlayerShip : MonoBehaviour
         if (ZoomedOut)
         {
             DeductControl(ZoomOutCost * Time.deltaTime);
+        }
+
+        if (TrajectoryTimer < 0f)
+        {
+            Vector3 position = transform.position;
+            Trajectory = transform.position - PrevPosition;
+            PrevPosition = position;
+            TrajectoryTimer = 0.5f;
+        }
+        else
+        {
+            TrajectoryTimer -= Time.deltaTime;
         }
     }
 
