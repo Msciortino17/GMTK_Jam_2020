@@ -33,6 +33,7 @@ public class PlayerShip : MonoBehaviour
     public bool HasWeaponUpgrade;
     public GameObject BulletPrefab;
     public float BulletCost;
+    public float WeaponTimer;
     
     // Stats
     public float Health;
@@ -74,6 +75,10 @@ public class PlayerShip : MonoBehaviour
     public GameObject MySprite;
     public CapsuleCollider MyCollider;
     public Text HighScore;
+    
+    // Sounds
+    public AudioClip[] BlasterSounds;
+    public AudioSource BlasterAudioSource;
     
     /// <summary>
     /// Standard start
@@ -129,6 +134,11 @@ public class PlayerShip : MonoBehaviour
         {
             HealthTimer -= Time.deltaTime;
         }
+
+        if (WeaponTimer > 0f)
+        {
+            WeaponTimer -= Time.deltaTime;
+        }
     }
 
     /// <summary>
@@ -169,13 +179,16 @@ public class PlayerShip : MonoBehaviour
             DeductControl(RotationCost * Time.deltaTime);
         }
 
-        if (Input.GetKeyDown(KeyCode.Space) && Control > 0.01f)
+        if (Input.GetKeyDown(KeyCode.Space) && Control > 0.01f && WeaponTimer <= 0f)
         {
             GameObject bullet = Instantiate(BulletPrefab, transform.position, transform.rotation);
             // bullet.transform.rotation = transform.rotation;
             // bullet.transform.position = transform.position;
             bullet.GetComponent<Bullet>().Fire(HasWeaponUpgrade, CurrentSpeed);
             DeductControl(BulletCost);
+            WeaponTimer = 0.25f;
+            BlasterAudioSource.clip = BlasterSounds[Random.Range(0, BlasterSounds.Length)];
+            BlasterAudioSource.Play();
         }
 
         if (Input.GetKeyDown(KeyCode.LeftShift) || Input.GetKeyDown(KeyCode.RightShift))
