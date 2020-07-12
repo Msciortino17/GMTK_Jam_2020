@@ -215,7 +215,7 @@ public class GameManager : MonoBehaviour
             return ControlState.Extreme;
         }
 
-        if (Player.Control > 0f)
+        if (Player.Control > 0.01f)
         {
             return ControlState.Critical;
         }

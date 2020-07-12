@@ -2756,6 +2756,11 @@ PrefabInstance:
       objectReference: {fileID: 1201294898}
     - target: {fileID: 7620000571542121724, guid: 8e8f4c674d073493bb284f558f05cb72,
         type: 3}
+      propertyPath: HealthText
+      value: 
+      objectReference: {fileID: 1913250512}
+    - target: {fileID: 7620000571542121724, guid: 8e8f4c674d073493bb284f558f05cb72,
+        type: 3}
       propertyPath: NormalCamera
       value: 
       objectReference: {fileID: 1249677660}
@@ -2766,14 +2771,9 @@ PrefabInstance:
       objectReference: {fileID: 454948616}
     - target: {fileID: 7620000571542121724, guid: 8e8f4c674d073493bb284f558f05cb72,
         type: 3}
-      propertyPath: DontLowerControl
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7620000571542121724, guid: 8e8f4c674d073493bb284f558f05cb72,
-        type: 3}
-      propertyPath: MicroJumpTime
-      value: 15
-      objectReference: {fileID: 0}
+      propertyPath: GameOver
+      value: 
+      objectReference: {fileID: 2100281963}
     - target: {fileID: 7620000571542121724, guid: 8e8f4c674d073493bb284f558f05cb72,
         type: 3}
       propertyPath: HighScore
@@ -2781,14 +2781,24 @@ PrefabInstance:
       objectReference: {fileID: 181774927}
     - target: {fileID: 7620000571542121724, guid: 8e8f4c674d073493bb284f558f05cb72,
         type: 3}
-      propertyPath: GameOver
-      value: 
-      objectReference: {fileID: 2100281963}
+      propertyPath: StandardAcceleration
+      value: 1500
+      objectReference: {fileID: 0}
     - target: {fileID: 7620000571542121724, guid: 8e8f4c674d073493bb284f558f05cb72,
         type: 3}
-      propertyPath: HealthText
-      value: 
-      objectReference: {fileID: 1913250512}
+      propertyPath: StandardRotationSpeed
+      value: 270
+      objectReference: {fileID: 0}
+    - target: {fileID: 7620000571542121724, guid: 8e8f4c674d073493bb284f558f05cb72,
+        type: 3}
+      propertyPath: AccelerationCost
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 7620000571542121724, guid: 8e8f4c674d073493bb284f558f05cb72,
+        type: 3}
+      propertyPath: RotationCost
+      value: 2
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8e8f4c674d073493bb284f558f05cb72, type: 3}
 --- !u!1001 &8852008417882101757

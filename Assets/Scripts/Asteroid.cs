@@ -27,7 +27,7 @@ public class Asteroid : MonoBehaviour
         MySpaceObject = GetComponent<SpaceObject>();
         MyRigidBody = GetComponent<Rigidbody>();
         health = Random.Range(MinStartHealth, MaxStartHealth);
-        transform.localScale = new Vector3((health + 1) * 3f, (health + 1) * 3f, (health + 1) * 3f);
+        AdjustScaleOnHealth();
         DespawnTimer = 5f;
         Manager = GameManager.GetReference();
     }
@@ -141,6 +141,7 @@ public class Asteroid : MonoBehaviour
         if (playerShip != null)
         {
             playerShip.DeductHealth(health * 3);
+            playerShip.ShieldBurst.Play();
             playerShip.MySpaceObject.MyRigidBody.AddExplosionForce(ShipKnockbackForce, transform.position, 10f);
         }
 
@@ -171,7 +172,18 @@ public class Asteroid : MonoBehaviour
             }
             Death();
         }
-        transform.localScale = new Vector3((health + 1) * 3f, (health + 1) * 3f, (health + 1) * 3f);
+
+        AdjustScaleOnHealth();
+    }
+
+    private void AdjustScaleOnHealth()
+    {
+        int healthMod = health;
+        if (!IsComet)
+        {
+            healthMod += 1;
+        }
+        transform.localScale = new Vector3( healthMod * 3f, healthMod * 3f, healthMod * 3f);
     }
 
     /// <summary>

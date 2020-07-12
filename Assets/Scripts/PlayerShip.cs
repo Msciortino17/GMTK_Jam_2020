@@ -53,6 +53,7 @@ public class PlayerShip : MonoBehaviour
    
     // Particles
     public ParticleSystem ControlBurst;
+    public ParticleSystem ShieldBurst;
     public ParticleSystem StarsUnstable;
     public ParticleSystem StarsExtreme;
     public ParticleSystem StarsCritical;
@@ -251,7 +252,7 @@ public class PlayerShip : MonoBehaviour
         StarsUnstable.gameObject.SetActive(Control < 76f);
         StarsExtreme.gameObject.SetActive(Control < 51f);
         StarsCritical.gameObject.SetActive(Control < 26f);
-        StarsOoC.gameObject.SetActive(Control <= 1f);
+        StarsOoC.gameObject.SetActive(Control <= 0.1f);
     }
 
     /// <summary>
@@ -355,6 +356,7 @@ public class PlayerShip : MonoBehaviour
         if (other.gameObject.layer == 10)
         {
             DeductHealth(20f);
+            ShieldBurst.Play();
             MySpaceObject.MyRigidBody.AddExplosionForce(2000f, other.transform.position, 1000f);
         }
     }
