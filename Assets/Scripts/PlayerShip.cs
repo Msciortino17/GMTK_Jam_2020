@@ -66,6 +66,13 @@ public class PlayerShip : MonoBehaviour
     public float MicroJumpTimer;
     public float MicroJumpTime;
     
+    // Game over
+    public bool Dead;
+    public GameObject GameOver;
+    public GameObject MySprite;
+    public CapsuleCollider MyCollider;
+    public Text HighScore;
+    
     /// <summary>
     /// Standard start
     /// </summary>
@@ -73,6 +80,7 @@ public class PlayerShip : MonoBehaviour
     {
         MySpaceObject = GetComponent<SpaceObject>();
         Manager = GameManager.GetReference();
+        MyCollider = GetComponent<CapsuleCollider>();
 
         Health = 100f;
         Control = 100f;
@@ -84,6 +92,12 @@ public class PlayerShip : MonoBehaviour
     /// </summary>
     void Update()
     {
+        if (Dead)
+        {
+            MySpaceObject.MyRigidBody.velocity = Vector3.zero;
+            return;
+        }
+        
         CurrentSpeed = MySpaceObject.MyRigidBody.velocity.magnitude;
         DebugText.SetText("Speed: " + CurrentSpeed);
         
@@ -121,6 +135,7 @@ public class PlayerShip : MonoBehaviour
     /// </summary>
     private void UpdateInput()
     {
+        
         if (HoldingUp() && Control > 0.01f)
         {
             float speed = HasSpeedUpgrade ? UpgradedAcceleration : StandardAcceleration;
@@ -194,6 +209,11 @@ public class PlayerShip : MonoBehaviour
             
             UpdateStarParticles();
         }
+
+        if (Input.GetKeyDown(KeyCode.K))
+        {
+            DeductHealth(20f);
+        }
     }
 
     /// <summary>
@@ -240,9 +260,14 @@ public class PlayerShip : MonoBehaviour
         HealthTimer = 0.5f;
         
         Health -= amount;
-        if (amount < 0f)
+        if (Health <= 0f)
         {
-            Debug.Log("ded"); // todo reset game
+            Dead = true;
+            MySprite.SetActive(false);
+            MyCollider.enabled = false;
+            ControlBurst.Play();
+            GameOver.SetActive(true);
+            HighScore.text = "Your Score: " + Score;
         }
         
         // Update UI

@@ -9688,8 +9688,9 @@ MonoBehaviour:
     type: 3}
   BulletCost: 1
   Health: 0
+  HealthTimer: 0
   Control: 0
-  Gold: 0
+  Score: 0
   ControlBar: {fileID: 0}
   HealthBar: {fileID: 0}
   NormalCamera: {fileID: 0}
@@ -9704,6 +9705,13 @@ MonoBehaviour:
   Trajectory: {x: 0, y: 0, z: 0}
   PrevPosition: {x: 0, y: 0, z: 0}
   TrajectoryTimer: 0
+  MicroJumpTimer: 0
+  MicroJumpTime: 0
+  Dead: 0
+  GameOver: {fileID: 0}
+  MySprite: {fileID: 4144242303016462163}
+  MyCollider: {fileID: 0}
+  HighScore: {fileID: 0}
 --- !u!114 &5232717504308761244
 MonoBehaviour:
   m_ObjectHideFlags: 0
