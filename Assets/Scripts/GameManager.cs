@@ -130,7 +130,7 @@ public class GameManager : MonoBehaviour
         // drifting into the wormhole.
         int asteroidNum = NumAsteroids;
         float playerSpeed = Player.MySpaceObject.MyRigidBody.velocity.magnitude;
-        if (GetCurrentControlState() == ControlState.OutOfControl && playerSpeed > 8f)
+        if (GetCurrentControlState() == ControlState.OutOfControl && playerSpeed > 14f)
         {
             asteroidNum = NumAsteroids / 5;
         }

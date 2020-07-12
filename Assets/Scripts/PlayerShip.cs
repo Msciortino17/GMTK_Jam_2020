@@ -144,7 +144,7 @@ public class PlayerShip : MonoBehaviour
         // Steady depletion of shields when out of control.
         if (Control <= 0.01f)
         {
-            Health -= 1f * Time.deltaTime;
+            DeductHealth(Time.deltaTime * 0.25f, true);
         }
     }
 
@@ -252,10 +252,10 @@ public class PlayerShip : MonoBehaviour
     /// <summary>
     /// Lower the health without letting it go negative
     /// </summary>
-    public void DeductHealth(float amount)
+    public void DeductHealth(float amount, bool overrideTimer = false)
     {
         // This gives the players some wiggle in case of weird collision.
-        if (HealthTimer > 0f)
+        if (!overrideTimer && HealthTimer > 0f)
         {
             return;
         }

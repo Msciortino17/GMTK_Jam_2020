@@ -44,13 +44,39 @@ public class Asteroid : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // this speed check is a last minute hack to try and prevent deadlock when player is out of control.
-        // should increase the odds of an asteroid hitting them and getting them going.
-        float playerSpeed = Manager.Player.MySpaceObject.MyRigidBody.velocity.magnitude;
-        if (VelocityChangeTimer < 0f && playerSpeed > 8f)
+        if (DespawnTimer < 0f)
+        {
+            GameManager manager = GameManager.GetReference();
+            
+            // Do a distance check and despawn if far away.
+            Vector3 toPlayer = manager.Player.transform.position - transform.position;
+            float distance = toPlayer.magnitude;
+            if (distance > manager.MinAsteroidDistance)
+            {
+                Death();
+            }
+            else
+            {
+                DespawnTimer = 5f;
+            }
+        }
+        else
+        {
+            DespawnTimer -= Time.deltaTime;
+        }
+        if (VelocityChangeTimer < 0f)
         {
             // If control levels are unstable, randomly apply forces
             ControlState state = Manager.GetCurrentControlState();
+
+            // this speed check is a last minute hack to try and prevent deadlock when player is out of control.
+            // should increase the odds of an asteroid hitting them and getting them going.
+            float playerSpeed = Manager.Player.MySpaceObject.MyRigidBody.velocity.magnitude;
+            if (state == ControlState.OutOfControl && playerSpeed < 8f)
+            {
+                return;
+            }
+            
             if (state > ControlState.Stable)
             {
                 int stateIntInverse = 5 - (int) state;
@@ -100,27 +126,6 @@ public class Asteroid : MonoBehaviour
         else
         {
             VelocityChangeTimer -= Time.deltaTime;
-        }
-        
-        if (DespawnTimer < 0f)
-        {
-            GameManager manager = GameManager.GetReference();
-            
-            // Do a distance check and despawn if far away.
-            Vector3 toPlayer = manager.Player.transform.position - transform.position;
-            float distance = toPlayer.magnitude;
-            if (distance > manager.MinAsteroidDistance)
-            {
-                Death();
-            }
-            else
-            {
-                DespawnTimer = 5f;
-            }
-        }
-        else
-        {
-            DespawnTimer -= Time.deltaTime;
         }
     }
 
