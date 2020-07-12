@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Random = UnityEngine.Random;
+using UnityEngine.UI;
 
 public enum ControlState
 {
@@ -55,6 +56,9 @@ public class GameManager : MonoBehaviour
     public GameObject ZoomedOutCamera;
     public GameObject NonZoomedInCameras;
 
+    public float FadeInTimer;
+    public Image FadeInRef;
+
     /// <summary>
     /// Universal method to grab a reference.
     /// </summary>
@@ -71,11 +75,32 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        FadeInTimer = 1f;
         AsteroidSpawnTimer = 0f;
     }
 
     private void Update()
     {
+        if (FadeInTimer > 0f)
+        {
+            if (FadeInRef == null || !FadeInRef.gameObject.activeInHierarchy)
+            {
+                FadeInTimer = 0f;
+                return;
+            }
+            
+            FadeInTimer -= Time.deltaTime;
+
+            Color color = FadeInRef.color;
+            color.a = FadeInTimer;
+            FadeInRef.color = color;
+
+            if (FadeInTimer <= 0f)
+            {
+                FadeInRef.gameObject.SetActive(false);
+            }
+        }
+        
         if (MainMenu)
         {
             return;
@@ -162,17 +187,18 @@ public class GameManager : MonoBehaviour
     {
         if (WormholeSpawnTimer <= 0f && WormHoleRef == null)
         {
+            ControlState state = GetCurrentControlState();
             Vector3 position = GenerateRandomPositionInBounds(Player.transform.position, 
-                MinAsteroidDistance * 2f, MaxAsteroidDistance * 2f);
+                MinAsteroidDistance * 3f, MaxAsteroidDistance * 6f);
 
-            if (GetCurrentControlState() == ControlState.OutOfControl)
+            if (state == ControlState.OutOfControl)
             {
                 position = Player.Trajectory.normalized * 350f;
                 position += Player.transform.position;
             }
             WormHoleRef = Instantiate(WormHolePrefab, position, Quaternion.identity, transform).GetComponent<WormHole>();
             
-            WormholeSpawnTimer = WormholeSpawnTime;
+            WormholeSpawnTimer = state == ControlState.OutOfControl ? 5f : WormholeSpawnTime;
         }
         else
         {
