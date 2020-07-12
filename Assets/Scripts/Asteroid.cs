@@ -4,6 +4,7 @@ using Random = UnityEngine.Random;
 
 public class Asteroid : MonoBehaviour
 {
+    public bool IsComet;
     public SpaceObject MySpaceObject;
     public Rigidbody MyRigidBody;
     public int health;
@@ -16,6 +17,7 @@ public class Asteroid : MonoBehaviour
     public float AsteroidKnockbackForce;
 
     public ParticleSystem ControlBurst;
+    public GameManager Manager;
 
     private void Awake()
     {
@@ -24,6 +26,7 @@ public class Asteroid : MonoBehaviour
         health = Random.Range(MinStartHealth, MaxStartHealth);
         transform.localScale = new Vector3(health * 3f, health * 3f, health * 3f);
         DespawnTimer = 5f;
+        Manager = GameManager.GetReference();
     }
 
     /// <summary>
@@ -40,10 +43,8 @@ public class Asteroid : MonoBehaviour
     {
         if (VelocityChangeTimer < 0f)
         {
-            GameManager manager = GameManager.GetReference();
-            
             // If control levels are unstable, randomly apply forces
-            ControlState state = manager.GetCurrentControlState();
+            ControlState state = Manager.GetCurrentControlState();
             if (state > ControlState.Stable)
             {
                 int stateIntInverse = 5 - (int) state;
@@ -55,7 +56,7 @@ public class Asteroid : MonoBehaviour
                     Vector3 direction = Vector3.zero;
                     if (Random.Range(0, 2) == 0)
                     {
-                        direction = (manager.Player.transform.position - transform.position).normalized;
+                        direction = (Manager.Player.transform.position - transform.position).normalized;
                     }
                     else
                     {
@@ -73,11 +74,11 @@ public class Asteroid : MonoBehaviour
                 {
                     if (Random.Range(0, 2) == 0)
                     {
-                        DeductHealth(1);
+                        DeductHealth(1, false);
                     }
                     else
                     {
-                        DeductHealth(-1);
+                        DeductHealth(-1, false);
                     }
 
                     // Don't want to burst twice if it happens to change direction and size
@@ -120,6 +121,7 @@ public class Asteroid : MonoBehaviour
     private void OnCollisionEnter(Collision other)
     {
         int damage = 1;
+        bool hitByBullet = false;
         
         // Take damage from bullets, and destroy the bullet.
         Bullet bullet = other.gameObject.GetComponent<Bullet>();
@@ -127,6 +129,7 @@ public class Asteroid : MonoBehaviour
         {
             damage = bullet.IsUpgraded ? bullet.UpgradedDamage : bullet.StandardDamage;
             Destroy(bullet.gameObject);
+            hitByBullet = true;
         }
         
         // If we hit the ship, deduct some health, and knock it back.
@@ -138,18 +141,26 @@ public class Asteroid : MonoBehaviour
         }
 
         MyRigidBody.AddExplosionForce(AsteroidKnockbackForce, other.transform.position, 100f);
-        DeductHealth(damage);
+        DeductHealth(damage, hitByBullet);
     }
 
     /// <summary>
     /// The scale should equal the health
     /// </summary>
-    private void DeductHealth(int amount)
+    private void DeductHealth(int amount, bool killedByPlayer)
     {
         health -= amount;
+        if (killedByPlayer)
+        {
+            Manager.Player.Score += IsComet ? 500 : 100;
+        }
         if (health <= 0)
         {
             // todo spawn loot here
+            if (killedByPlayer)
+            {
+                Manager.Player.Score += IsComet ? 2000 : 400;
+            }
             Death();
         }
         transform.localScale = new Vector3(health * 3f, health * 3f, health * 3f);
