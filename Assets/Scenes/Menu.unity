@@ -1532,7 +1532,7 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: 'All of these actions will use up your control. Find crystals like these
-    for more by shooting asteroids and comets, or journey into the worm hole to refill
+    for more by shooting asteroids and comets, or journey into the wormhole to refill
     and be teleported randomly.
 
 
@@ -8194,7 +8194,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 300, y: -161}
+  m_AnchoredPosition: {x: 322, y: -161}
   m_SizeDelta: {x: 500, y: 500}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &2142972435
@@ -8229,7 +8229,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Worm Hole
+  m_Text: Wormhole
 --- !u!222 &2142972436
 CanvasRenderer:
   m_ObjectHideFlags: 0
