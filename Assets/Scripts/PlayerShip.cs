@@ -99,7 +99,8 @@ public class PlayerShip : MonoBehaviour
         }
         
         CurrentSpeed = MySpaceObject.MyRigidBody.velocity.magnitude;
-        DebugText.SetText("Speed: " + CurrentSpeed);
+        // DebugText.SetText("Speed: " + CurrentSpeed);
+        DebugText.SetText("Score: " + Score);
         
         UpdateInput();
         
@@ -230,6 +231,12 @@ public class PlayerShip : MonoBehaviour
         if (Control < 0f)
         {
             Control = 0f;
+        }
+
+        if (Control > 100f)
+        {
+            Score += 400;
+            Control = 100f;
         }
         
         // Update UI

@@ -130,6 +130,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 450134b0fdc1744d9ad84b9d4b710247, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  IsComet: 0
   MySpaceObject: {fileID: 0}
   MyRigidBody: {fileID: 0}
   health: 0
@@ -140,6 +141,9 @@ MonoBehaviour:
   ShipKnockbackForce: 200
   AsteroidKnockbackForce: 200
   ControlBurst: {fileID: 3469257769432595055}
+  Manager: {fileID: 0}
+  ControlCrystalPrefab: {fileID: 8258421266991899015, guid: ba3e5f5eed2994b39807f1b9df5bc847,
+    type: 3}
 --- !u!54 &4066548142289288257
 Rigidbody:
   m_ObjectHideFlags: 0

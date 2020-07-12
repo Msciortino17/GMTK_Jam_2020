@@ -19,6 +19,8 @@ public class Asteroid : MonoBehaviour
     public ParticleSystem ControlBurst;
     public GameManager Manager;
 
+    public GameObject ControlCrystalPrefab;
+
     private void Awake()
     {
         MySpaceObject = GetComponent<SpaceObject>();
@@ -156,7 +158,10 @@ public class Asteroid : MonoBehaviour
         }
         if (health <= 0)
         {
-            // todo spawn loot here
+            if (killedByPlayer && (IsComet || Random.Range(0, 5) == 0))
+            {
+                Instantiate(ControlCrystalPrefab, transform.position, Quaternion.identity);
+            }
             if (killedByPlayer)
             {
                 Manager.Player.Score += IsComet ? 2000 : 400;
