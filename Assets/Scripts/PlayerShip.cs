@@ -11,353 +11,274 @@ using Random = UnityEngine.Random;
 /// </summary>
 public class PlayerShip : MonoBehaviour
 {
-    public SpaceObject MySpaceObject;
-    private GameManager Manager;
+	public SpaceObject MySpaceObject;
+	private GameManager Manager;
 
-    public bool DontLowerControl; // just for testing
+	public bool DontLowerControl; // just for testing
 
-    // Moving forward
-    public float StandardAcceleration;
-    public float UpgradedAcceleration;
-    public bool HasSpeedUpgrade;
-    public float CurrentSpeed;
-    public float AccelerationCost;
-    
-    // Rotation
-    public float StandardRotationSpeed;
-    public float UpgradedRotationSpeed;
-    public bool HasRotationUpgrade;
-    public float RotationCost;
-    
-    // Weapon
-    public bool HasWeaponUpgrade;
-    public GameObject BulletPrefab;
-    public float BulletCost;
-    public float WeaponTimer;
-    
-    // Stats
-    public float Health;
-    public float HealthTimer;
-    public float Control;
-    public int Score;
-    
-    // UI
-    public ControlBar ControlBar; 
-    public RectTransform HealthBar;
-    public Text HealthText;
-    
-    // Cameras 
-    public GameObject NormalCamera;
-    public GameObject ZoomedOutCamera;
-    public bool ZoomedOut;
-    public float ZoomOutCost;
-   
-    // Particles
-    public ParticleSystem ControlBurst;
-    public ParticleSystem ShieldBurst;
-    public ParticleSystem StarsUnstable;
-    public ParticleSystem StarsExtreme;
-    public ParticleSystem StarsCritical;
-    public ParticleSystem StarsOoC;
-    
-    // Trajectory calculation
-    public Vector3 Trajectory;
-    public Vector3 PrevPosition;
-    public float TrajectoryTimer;
-    
-    // Micro jumps
-    public float MicroJumpTimer;
-    public float MicroJumpTime;
-    
-    // Game over
-    public bool Dead;
-    public GameObject GameOver;
-    public GameObject MySprite;
-    public CapsuleCollider MyCollider;
-    public Text HighScore;
-    
-    // Sounds
-    public AudioClip[] BlasterSounds;
-    public AudioSource BlasterAudioSource;
-    public AudioSource ShieldBounceAudioSource;
-    
-    /// <summary>
-    /// Standard start
-    /// </summary>
-    void Start()
-    {
-        MySpaceObject = GetComponent<SpaceObject>();
-        Manager = GameManager.GetReference();
-        MyCollider = GetComponent<CapsuleCollider>();
+	// Moving forward
+	public float StandardAcceleration;
+	public float UpgradedAcceleration;
+	public bool HasSpeedUpgrade;
+	public float CurrentSpeed;
+	public float AccelerationCost;
 
-        Health = 100f;
-        Control = 100f;
-        ZoomedOut = false;
-    }
+	// Rotation
+	public float StandardRotationSpeed;
+	public float UpgradedRotationSpeed;
+	public bool HasRotationUpgrade;
+	public float RotationCost;
 
-    /// <summary>
-    /// Standard update loop
-    /// </summary>
-    void Update()
-    {
-        if (Dead)
-        {
-            MySpaceObject.MyRigidBody.velocity = Vector3.zero;
-            return;
-        }
-        
-        CurrentSpeed = MySpaceObject.MyRigidBody.velocity.magnitude;
-        // DebugText.SetText("Speed: " + CurrentSpeed);
-        DebugText.SetText("Score: " + Score);
-        
-        UpdateInput();
-        
-        UpdateMicroJumps();
+	// Weapons
+	public GameObject BulletPrefab;
+	public float BulletCost;
+	public float WeaponTimer;
 
-        if (ZoomedOut)
-        {
-            DeductControl(ZoomOutCost * Time.deltaTime);
-        }
+	// Stats
+	public float Health;
+	public float HealthTimer;
+	public float Control;
 
-        if (TrajectoryTimer < 0f)
-        {
-            Vector3 position = transform.position;
-            Trajectory = transform.position - PrevPosition;
-            PrevPosition = position;
-            TrajectoryTimer = 0.5f;
-        }
-        else
-        {
-            TrajectoryTimer -= Time.deltaTime;
-        }
+	// Particles
+	public ParticleSystem ControlBurst;
+	public ParticleSystem ShieldBurst;
+	public ParticleSystem StarsUnstable;
+	public ParticleSystem StarsExtreme;
+	public ParticleSystem StarsCritical;
+	public ParticleSystem StarsOoC;
 
-        if (HealthTimer >= 0f)
-        {
-            HealthTimer -= Time.deltaTime;
-        }
+	// Trajectory calculation
+	public Vector3 Trajectory;
+	public Vector3 PrevPosition;
+	public float TrajectoryTimer;
 
-        if (WeaponTimer > 0f)
-        {
-            WeaponTimer -= Time.deltaTime;
-        }
+	// Game over
+	public bool Dead;
+	public GameObject GameOver;
+	public GameObject MySprite;
+	public CapsuleCollider MyCollider;
+	public Text HighScore;
 
-        // Steady depletion of shields when out of control.
-        if (Control <= 0.01f)
-        {
-            DeductHealth(Time.deltaTime * 0.25f, true);
-        }
-    }
+	// Sounds
+	public AudioClip[] BlasterSounds;
+	public AudioSource BlasterAudioSource;
+	public AudioSource ShieldBounceAudioSource;
 
-    /// <summary>
-    /// Update loop to handle all input.
-    /// Friction is only applied while accelerating for a smoother experience.
-    /// It's less realistic, but it makes it much easier to control.
-    /// </summary>
-    private void UpdateInput()
-    {
-        
-        if (HoldingUp() && Control > 0.01f)
-        {
-            float speed = HasSpeedUpgrade ? UpgradedAcceleration : StandardAcceleration;
-            MySpaceObject.MoveForward(speed * Time.deltaTime);
-            MySpaceObject.ApplyFriction();
-            DeductControl(AccelerationCost * Time.deltaTime);
-        }
-        
-        if (HoldingDown() && CurrentSpeed > 1f && Control > 0.01f)
-        {
-            float speed = HasSpeedUpgrade ? UpgradedAcceleration : StandardAcceleration;
-            MySpaceObject.MoveForward(-speed * 0.25f * Time.deltaTime);
-            MySpaceObject.ApplyFriction();
-            DeductControl(AccelerationCost * Time.deltaTime);
-        }
+	/// <summary>
+	/// Standard start
+	/// </summary>
+	void Start()
+	{
+		MySpaceObject = GetComponent<SpaceObject>();
+		Manager = GameManager.GetReference();
+		MyCollider = GetComponent<CapsuleCollider>();
 
-        if (HoldingLeft() && Control > 0.01f)
-        {
-            float speed = HasRotationUpgrade ? UpgradedRotationSpeed : StandardRotationSpeed;
-            MySpaceObject.Rotate(speed * Time.deltaTime);
-            DeductControl(RotationCost * Time.deltaTime);
-        }
+		Health = 100f;
+		Control = 100f;
+	}
 
-        if (HoldingRight() && Control > 0.01f)
-        {
-            float speed = HasRotationUpgrade ? UpgradedRotationSpeed : StandardRotationSpeed;
-            MySpaceObject.Rotate(-speed * Time.deltaTime);
-            DeductControl(RotationCost * Time.deltaTime);
-        }
+	/// <summary>
+	/// Standard update loop
+	/// </summary>
+	void Update()
+	{
+		if (Dead)
+		{
+			MySpaceObject.MyRigidBody.velocity = Vector3.zero;
+			return;
+		}
 
-        if (Input.GetKeyDown(KeyCode.Space) && Control > 0.01f && WeaponTimer <= 0f)
-        {
-            GameObject bullet = Instantiate(BulletPrefab, transform.position, transform.rotation);
-            // bullet.transform.rotation = transform.rotation;
-            // bullet.transform.position = transform.position;
-            bullet.GetComponent<Bullet>().Fire(HasWeaponUpgrade, CurrentSpeed);
-            DeductControl(BulletCost);
-            PlayBlaster();
-            WeaponTimer = 0.25f;
-        }
+		CurrentSpeed = MySpaceObject.MyRigidBody.velocity.magnitude;
+		// DebugText.SetText("Speed: " + CurrentSpeed);
+		DebugText.SetText("Health: " + Health + ", Control: " + Control);
 
-        if (Input.GetKeyDown(KeyCode.LeftShift) || Input.GetKeyDown(KeyCode.RightShift))
-        {
-            NormalCamera.SetActive(false);
-            ZoomedOutCamera.SetActive(true);
-            ZoomedOut = true;
-        }
+		UpdateInput();
 
-        if (Input.GetKeyUp(KeyCode.LeftShift) || Input.GetKeyUp(KeyCode.RightShift))
-        {
-            NormalCamera.SetActive(true);
-            ZoomedOutCamera.SetActive(false);
-            ZoomedOut = false;
-        }
-    }
+		if (TrajectoryTimer < 0f)
+		{
+			Vector3 position = transform.position;
+			Trajectory = transform.position - PrevPosition;
+			PrevPosition = position;
+			TrajectoryTimer = 0.5f;
+		}
+		else
+		{
+			TrajectoryTimer -= Time.deltaTime;
+		}
 
-    public void PlayBlaster()
-    {
-        BlasterAudioSource.clip = BlasterSounds[Random.Range(0, BlasterSounds.Length)];
-        BlasterAudioSource.Play();
-    }
+		if (HealthTimer >= 0f)
+		{
+			HealthTimer -= Time.deltaTime;
+		}
 
-    /// <summary>
-    /// Lower the control without letting it go negative
-    /// </summary>
-    public void DeductControl(float amount)
-    {
-        if (DontLowerControl)
-        {
-            return;
-        }
-        
-        Control -= amount;
-        if (Control < 0f)
-        {
-            Control = 0f;
-        }
+		if (WeaponTimer > 0f)
+		{
+			WeaponTimer -= Time.deltaTime;
+		}
 
-        if (Control > 100f)
-        {
-            Score += 400;
-            Control = 100f;
-        }
-        
-        // Update UI
-        ControlBar.UpdateSize(Control);
-        
-        UpdateStarParticles();
-    }
+		// Steady depletion of shields when out of control.
+		if (Control <= 0.01f)
+		{
+			DeductHealth(Time.deltaTime * 0.25f, true);
+		}
+	}
 
-    public void UpdateStarParticles()
-    {
-        StarsUnstable.gameObject.SetActive(Control < 76f);
-        StarsExtreme.gameObject.SetActive(Control < 51f);
-        StarsCritical.gameObject.SetActive(Control < 26f);
-        StarsOoC.gameObject.SetActive(Control <= 0.1f);
-    }
+	/// <summary>
+	/// Update loop to handle all input.
+	/// Friction is only applied while accelerating for a smoother experience.
+	/// It's less realistic, but it makes it much easier to control.
+	/// </summary>
+	private void UpdateInput()
+	{
 
-    /// <summary>
-    /// Lower the health without letting it go negative
-    /// </summary>
-    public void DeductHealth(float amount, bool overrideTimer = false)
-    {
-        // This gives the players some wiggle in case of weird collision.
-        if (!overrideTimer && HealthTimer > 0f)
-        {
-            return;
-        }
+		if (HoldingUp() && Control > 0.01f)
+		{
+			float speed = HasSpeedUpgrade ? UpgradedAcceleration : StandardAcceleration;
+			MySpaceObject.MoveForward(speed * Time.deltaTime);
+			MySpaceObject.ApplyFriction();
+			DeductControl(AccelerationCost * Time.deltaTime);
+		}
 
-        HealthTimer = 0.5f;
-        
-        Health -= amount;
-        if (Health <= 0f)
-        {
-            Health = 0f;
-            Dead = true;
-            MySprite.SetActive(false);
-            MyCollider.enabled = false;
-            ControlBurst.Play();
-            GameOver.SetActive(true);
-            HighScore.text = "Your Score: " + Score;
-        }
-        
-        // Update UI
-        Vector2 size = HealthBar.sizeDelta;
-        size.x = 500f * (Health / 100f);
-        HealthBar.sizeDelta = size;
+		if (HoldingDown() && CurrentSpeed > 1f && Control > 0.01f)
+		{
+			float speed = HasSpeedUpgrade ? UpgradedAcceleration : StandardAcceleration;
+			MySpaceObject.MoveForward(-speed * 0.25f * Time.deltaTime);
+			MySpaceObject.ApplyFriction();
+			DeductControl(AccelerationCost * Time.deltaTime);
+		}
 
-        HealthText.text = (int) Health + "%";
-    }
+		if (HoldingLeft() && Control > 0.01f)
+		{
+			float speed = HasRotationUpgrade ? UpgradedRotationSpeed : StandardRotationSpeed;
+			MySpaceObject.Rotate(speed * Time.deltaTime);
+			DeductControl(RotationCost * Time.deltaTime);
+		}
 
-    /// <summary>
-    /// At critical levels of control, small jumps in space will occur.
-    /// </summary>
-    public void UpdateMicroJumps()
-    {
-        if (Manager.GetCurrentControlState() > ControlState.Extreme)
-        {
-            if (MicroJumpTimer <= 0f)
-            {
-                if (Random.Range(0, 2) == 0)
-                {
-                    Vector3 newPosition = Manager.GenerateRandomPositionInBounds(transform.position, 5, 20);
-                    if (!Physics.SphereCast(newPosition, 10f, Vector3.forward, out RaycastHit hit))
-                    {
-                        transform.position = newPosition;
-                        ControlBurst.Play();
-                    }
-                }
-                
-                MicroJumpTimer = MicroJumpTime;
-            }
-            else
-            {
-                MicroJumpTimer -= Time.deltaTime;
-            }
-        }
-    }
+		if (HoldingRight() && Control > 0.01f)
+		{
+			float speed = HasRotationUpgrade ? UpgradedRotationSpeed : StandardRotationSpeed;
+			MySpaceObject.Rotate(-speed * Time.deltaTime);
+			DeductControl(RotationCost * Time.deltaTime);
+		}
 
-    /// <summary>
-    /// Whether or not the player is holding the accelerate forward key
-    /// </summary>
-    private bool HoldingUp()
-    {
-        return Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow);
-    }
+		if (Input.GetKeyDown(KeyCode.Space) && Control > 0.01f && WeaponTimer <= 0f)
+		{
+			GameObject bullet = Instantiate(BulletPrefab, transform.position, transform.rotation);
+			// bullet.transform.rotation = transform.rotation;
+			// bullet.transform.position = transform.position;
+			bullet.GetComponent<Bullet>().Fire(CurrentSpeed);
+			DeductControl(BulletCost);
+			PlayBlaster();
+			WeaponTimer = 0.25f;
+		}
+	}
 
-    /// <summary>
-    /// Whether or not the player is holding the accelerate back key
-    /// </summary>
-    private bool HoldingDown()
-    {
-        return Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.DownArrow);
-    }
+	public void PlayBlaster()
+	{
+		BlasterAudioSource.clip = BlasterSounds[Random.Range(0, BlasterSounds.Length)];
+		BlasterAudioSource.Play();
+	}
 
-    /// <summary>
-    /// Whether or not the player is holding the rotate left key
-    /// </summary>
-    private bool HoldingLeft()
-    {
-        return Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow);
-    }
+	/// <summary>
+	/// Lower the control without letting it go negative
+	/// </summary>
+	public void DeductControl(float amount)
+	{
+		if (DontLowerControl)
+		{
+			return;
+		}
 
-    /// <summary>
-    /// Whether or not the player is holding the rotate right key
-    /// </summary>
-    private bool HoldingRight()
-    {
-        return Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow);
-    }
+		Control -= amount;
+		if (Control < 0f)
+		{
+			Control = 0f;
+		}
 
-    /// <summary>
-    /// Explode off of planets, taking a lot of damage
-    /// </summary>
-    private void OnCollisionEnter(Collision other)
-    {
-        if (other.gameObject.layer == 10)
-        {
-            DeductHealth(20f);
-            ShieldBurst.Play();
-            MySpaceObject.MyRigidBody.AddExplosionForce(2000f, other.transform.position, 1000f);
-            ShieldBounceAudioSource.Play();
-        }
-    }
+		if (Control > 100f)
+		{
+			Control = 100f;
+		}
+
+		UpdateStarParticles();
+	}
+
+	public void UpdateStarParticles()
+	{
+		StarsUnstable.gameObject.SetActive(Control < 76f);
+		StarsExtreme.gameObject.SetActive(Control < 51f);
+		StarsCritical.gameObject.SetActive(Control < 26f);
+		StarsOoC.gameObject.SetActive(Control <= 0.1f);
+	}
+
+	/// <summary>
+	/// Lower the health without letting it go negative
+	/// </summary>
+	public void DeductHealth(float amount, bool overrideTimer = false)
+	{
+		// This gives the players some wiggle in case of weird collision.
+		if (!overrideTimer && HealthTimer > 0f)
+		{
+			return;
+		}
+
+		HealthTimer = 0.5f;
+
+		Health -= amount;
+		if (Health <= 0f)
+		{
+			Health = 0f;
+			Dead = true;
+			MySprite.SetActive(false);
+			MyCollider.enabled = false;
+			ControlBurst.Play();
+			GameOver.SetActive(true);
+		}
+	}
+
+	/// <summary>
+	/// Whether or not the player is holding the accelerate forward key
+	/// </summary>
+	private bool HoldingUp()
+	{
+		return Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow);
+	}
+
+	/// <summary>
+	/// Whether or not the player is holding the accelerate back key
+	/// </summary>
+	private bool HoldingDown()
+	{
+		return Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.DownArrow);
+	}
+
+	/// <summary>
+	/// Whether or not the player is holding the rotate left key
+	/// </summary>
+	private bool HoldingLeft()
+	{
+		return Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow);
+	}
+
+	/// <summary>
+	/// Whether or not the player is holding the rotate right key
+	/// </summary>
+	private bool HoldingRight()
+	{
+		return Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow);
+	}
+
+	/// <summary>
+	/// Explode off of planets, taking a lot of damage
+	/// </summary>
+	private void OnCollisionEnter(Collision other)
+	{
+		if (other.gameObject.layer == 10)
+		{
+			DeductHealth(20f);
+			ShieldBurst.Play();
+			MySpaceObject.MyRigidBody.AddExplosionForce(2000f, other.transform.position, 1000f);
+			ShieldBounceAudioSource.Play();
+		}
+	}
 }

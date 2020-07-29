@@ -6,14 +6,10 @@ using Random = UnityEngine.Random;
 
 public class Bullet : MonoBehaviour
 {
-    public bool IsUpgraded;
     public bool LockedOn;
     
     public float StandardSpeed;
-    public float UpgradedSpeed;
-
     public int StandardDamage;
-    public int UpgradedDamage;
 
     public float Timer;
 
@@ -25,11 +21,9 @@ public class Bullet : MonoBehaviour
     /// <summary>
     /// Should be called by the player's ship after orienting it properly.
     /// </summary>
-    public void Fire(bool upgraded, float extraSpeed)
+    public void Fire(float extraSpeed)
     {
-        IsUpgraded = upgraded;
-
-        float speed = IsUpgraded ? UpgradedSpeed : StandardSpeed;
+        float speed = StandardSpeed;
         speed += extraSpeed;
         Rigidbody myRigidBody = GetComponent<Rigidbody>();
         myRigidBody.AddRelativeForce(speed, 0f, 0f, ForceMode.Impulse);

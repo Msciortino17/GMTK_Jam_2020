@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// To do: put this logic into the bullet script
+/// </summary>
 public class AsteroidGravity : MonoBehaviour
 {
     public float Radius;

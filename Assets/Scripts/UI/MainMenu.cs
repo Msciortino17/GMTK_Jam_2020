@@ -85,7 +85,7 @@ public class MainMenu : MonoBehaviour
             {
                 ShootTimer = 1f;
                 GameObject bullet = Instantiate(BulletPrefab, HowToShoot.transform.position, HowToShoot.transform.rotation);
-                bullet.GetComponent<Bullet>().Fire(false, 0f);
+                bullet.GetComponent<Bullet>().Fire(0f);
             }
         }
     }
